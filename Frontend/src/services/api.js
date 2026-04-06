@@ -11,11 +11,11 @@ const getAuthHeaders = () => {
 
 // Auth API
 export const authAPI = {
-  login: async (email, password) => {
+  login: async (rollNumber, name) => {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ rollNumber, name })
     });
     return response.json();
   },

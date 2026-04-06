@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthContext } from './AuthContextStore';
-import { usersAPI } from '../services/api';
+import { usersAPI, authAPI } from '../services/api';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -14,18 +14,13 @@ export const AuthProvider = ({ children }) => {
       if (storedToken) {
         try {
           // Verify token with backend
-          const response = await fetch('http://localhost:5000/api/auth/me', {
-            headers: {
-              'Authorization': `Bearer ${storedToken}`
-            }
-          });
+          const userData = await authAPI.getCurrentUser();
 
-          if (response.ok) {
-            const userData = await response.json();
+          if (userData && userData._id) {
             setUser(userData);
             setToken(storedToken);
           } else {
-            // Token invalid, remove it
+            // Token invalid or error, remove it
             localStorage.removeItem('token');
             setToken(null);
           }
@@ -43,17 +38,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (rollNumber, name) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ rollNumber, name })
-      });
+      const data = await authAPI.login(rollNumber, name);
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (data.message && !data.token) {
         throw new Error(data.message || 'Login failed');
       }
 
