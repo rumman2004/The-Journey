@@ -60,7 +60,7 @@ const Navbar = () => {
         }} />
 
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-16 md:h-20">
+          <div className="flex items-center justify-between h-16 lg:h-20">
 
             {/* ── LOGO ── */}
             <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
@@ -79,7 +79,7 @@ const Navbar = () => {
             </Link>
 
             {/* ── DESKTOP NAV LINKS ── */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-1">
               {navLinks.map(({ to, label }) => (
                 <Link
                   key={to}
@@ -111,7 +111,7 @@ const Navbar = () => {
             </div>
 
             {/* ── DESKTOP RIGHT ACTIONS ── */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3">
               {/* Auth */}
               {isAuthenticated ? (
                 <div className="flex items-center gap-3">
@@ -134,7 +134,7 @@ const Navbar = () => {
 
             {/* ── MOBILE HAMBURGER ── */}
             <button
-              className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-sm transition-all duration-200"
+              className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-sm transition-all duration-200"
               onClick={() => setMenuOpen(o => !o)}
               aria-label="Toggle menu"
               style={{ color: 'rgba(201,168,76,0.8)' }}
@@ -167,7 +167,7 @@ const Navbar = () => {
 
         {/* ── MOBILE MENU ── */}
         <div
-          className="md:hidden overflow-hidden transition-all duration-400"
+          className="lg:hidden overflow-hidden transition-all duration-400"
           style={{
             maxHeight: menuOpen ? '400px' : '0',
             background: 'rgba(8,13,26,0.97)',
