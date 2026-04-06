@@ -100,7 +100,7 @@ const AnimatedCard = ({ member, index }) => {
         bio={member.bio}
         // Properly fetching profilePicture which comes from your DB
         profilePhoto={member.profilePicture || member.profilePhoto || member.avatar || member.photo}
-        rollNumber={member.rollNumber}
+        // rollNumber={member.rollNumber}
         batch={member.batch || '2023-26'}
         isVerified={member.isVerified ?? member.verified ?? false}
         socialLinks={socialLinks}
