@@ -1,6 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { photosAPI } from '../../services/api';
 import Layout from '../../components/layout/Layout';
+
+const isVideoUrl = (url) => {
+  if (!url) return false;
+  const ext = url.split('?')[0].split('.').pop().toLowerCase();
+  return ['mp4', 'webm', 'mov', 'ogg'].includes(ext);
+};
+
+const isVideoType = (item) => item?.resourceType === 'video' || isVideoUrl(item?.imageUrl);
 
 const processDownload = async (url, filename) => {
   try {
@@ -129,6 +139,7 @@ const Lightbox = ({ photo, photos, onClose, onNav, allowDownload }) => {
   }, [onClose, onNav]);
 
   const currentIndex = photos.findIndex(p => p.id === photo.id);
+  const photoIsVideo = isVideoType(photo);
 
   return (
     <div
@@ -161,7 +172,7 @@ const Lightbox = ({ photo, photos, onClose, onNav, allowDownload }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              processDownload(photo.imageUrl, photo.caption || 'memory.jpg');
+              processDownload(photo.imageUrl, photo.caption || (photoIsVideo ? 'memory.mp4' : 'memory.jpg'));
             }}
             aria-label="Download"
             title="Download memory"
@@ -265,7 +276,7 @@ const Lightbox = ({ photo, photos, onClose, onNav, allowDownload }) => {
         ›
       </button>
 
-      {/* Image panel */}
+      {/* Media panel */}
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -274,33 +285,49 @@ const Lightbox = ({ photo, photos, onClose, onNav, allowDownload }) => {
           animation: 'lb-scale-in 0.3s cubic-bezier(0.22,1,0.36,1) forwards',
         }}
       >
-        {/* Photo frame */}
+        {/* Photo/Video frame */}
         <div style={{
-          background: '#f4efe6',
+          background: photoIsVideo ? '#0a0e1a' : '#f4efe6',
           padding: '10px 10px 0 10px',
           borderRadius: '12px',
           boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.1)',
           width: '100%',
         }}>
-          <img
-            src={photo.imageUrl}
-            alt={photo.caption || 'Batch photo'}
-            style={{
-              width: '100%',
-              maxHeight: '72vh',
-              objectFit: 'contain',
-              borderRadius: '6px',
-              display: 'block',
-              background: '#1a1510',
-            }}
-          />
+          {photoIsVideo ? (
+            <video
+              src={photo.imageUrl}
+              controls
+              autoPlay
+              style={{
+                width: '100%',
+                maxHeight: '72vh',
+                borderRadius: '6px',
+                display: 'block',
+                background: '#000',
+                outline: 'none',
+              }}
+            />
+          ) : (
+            <img
+              src={photo.imageUrl}
+              alt={photo.caption || 'Batch photo'}
+              style={{
+                width: '100%',
+                maxHeight: '72vh',
+                objectFit: 'contain',
+                borderRadius: '6px',
+                display: 'block',
+                background: '#1a1510',
+              }}
+            />
+          )}
           {/* Caption strip */}
           <div style={{ padding: '14px 8px 16px', textAlign: 'center' }}>
             <p style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontStyle: 'italic',
               fontSize: '0.85rem',
-              color: '#4a3f30',
+              color: photoIsVideo ? 'rgba(240,236,228,0.6)' : '#4a3f30',
               margin: 0,
             }}>{photo.caption}</p>
             <p style={{
@@ -308,7 +335,7 @@ const Lightbox = ({ photo, photos, onClose, onNav, allowDownload }) => {
               fontSize: '0.6rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: '#8a7a60',
+              color: photoIsVideo ? 'rgba(201,168,76,0.5)' : '#8a7a60',
               marginTop: '4px',
             }}>{SEM_LABELS[photo.semester] || photo.semester}</p>
           </div>
@@ -323,6 +350,7 @@ const PhotoCard = ({ photo, onClick, index }) => {
   const [loaded, setLoaded] = useState(false);
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
+  const cardIsVideo = isVideoType(photo);
 
   useEffect(() => {
     const el = ref.current;
@@ -342,7 +370,7 @@ const PhotoCard = ({ photo, onClick, index }) => {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
-      aria-label={`View: ${photo.caption}`}
+      aria-label={`View: ${photo.caption || 'media'}`}
       style={{
         breakInside: 'avoid',
         marginBottom: 'var(--gap)',
@@ -379,19 +407,50 @@ const PhotoCard = ({ photo, onClick, index }) => {
         }} />
       )}
 
-      <img
-        src={photo.imageUrl}
-        alt={photo.caption}
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-        style={{
-          display: 'block',
-          width: '100%',
-          height: 'auto',
-          opacity: loaded ? 1 : 0,
-          transition: 'opacity 0.5s ease',
-        }}
-      />
+      {cardIsVideo ? (
+        <>
+          <video
+            src={photo.imageUrl}
+            muted
+            preload="metadata"
+            onLoadedData={() => setLoaded(true)}
+            style={{
+              display: 'block',
+              width: '100%',
+              height: 'auto',
+              opacity: loaded ? 1 : 0,
+              transition: 'opacity 0.5s ease',
+            }}
+          />
+          {/* Video play badge */}
+          <div style={{
+            position: 'absolute', top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 48, height: 48, borderRadius: '50%',
+            background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)',
+            border: '2px solid rgba(201,168,76,0.35)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            pointerEvents: 'none', zIndex: 2,
+            opacity: loaded ? 1 : 0, transition: 'opacity 0.3s',
+          }}>
+            <span style={{ fontSize: '1.2rem', color: 'rgba(240,208,128,0.9)', marginLeft: '3px' }}>▶</span>
+          </div>
+        </>
+      ) : (
+        <img
+          src={photo.imageUrl}
+          alt={photo.caption}
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          style={{
+            display: 'block',
+            width: '100%',
+            height: 'auto',
+            opacity: loaded ? 1 : 0,
+            transition: 'opacity 0.5s ease',
+          }}
+        />
+      )}
 
       {/* Hover overlay */}
       <div className="photo-overlay" style={{
@@ -402,14 +461,16 @@ const PhotoCard = ({ photo, onClick, index }) => {
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
         padding: '14px 12px',
       }}>
-        <p style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontStyle: 'italic',
-          fontSize: '0.78rem',
-          color: '#f0ece4',
-          margin: 0,
-          lineHeight: 1.3,
-        }}>{photo.caption}</p>
+        {photo.caption && (
+          <p style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontStyle: 'italic',
+            fontSize: '0.78rem',
+            color: '#f0ece4',
+            margin: 0,
+            lineHeight: 1.3,
+          }}>{photo.caption}</p>
+        )}
         <p style={{
           fontFamily: "'Lato', sans-serif",
           fontSize: '0.55rem',
@@ -417,7 +478,7 @@ const PhotoCard = ({ photo, onClick, index }) => {
           textTransform: 'uppercase',
           color: 'rgba(201,168,76,0.65)',
           marginTop: '3px',
-        }}>{SEM_LABELS[photo.semester]}</p>
+        }}>{cardIsVideo ? '▶ Video · ' : ''}{SEM_LABELS[photo.semester]}</p>
       </div>
     </div>
   );
@@ -432,12 +493,30 @@ const Album = () => {
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
-    // Simulate backend fetch delay
-    const timer = setTimeout(() => {
-      setPhotos(STATIC_PHOTOS);
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
+    const fetchPhotos = async () => {
+      try {
+        // Fetch user-uploaded photos from the backend
+        const res = await photosAPI.getPhotos({ album: 'album', limit: 200 });
+        const uploaded = (res?.photos || []).map(p => ({
+          id: p._id,
+          imageUrl: p.imageUrl,
+          caption: p.caption || p.title || '',
+          semester: p.semester || 'General',
+          resourceType: p.imageUrl && isVideoUrl(p.imageUrl) ? 'video' : 'image',
+          uploadedBy: p.uploadedBy?.name || '',
+          createdAt: p.createdAt,
+        }));
+        // Merge: static first, then uploaded (newest first)
+        setPhotos([...STATIC_PHOTOS, ...uploaded]);
+      } catch (err) {
+        console.error('Failed to fetch uploaded photos:', err);
+        // Fallback to static only
+        setPhotos(STATIC_PHOTOS);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPhotos();
   }, []);
 
   const visible = filter === 'All'
@@ -529,6 +608,34 @@ const Album = () => {
           }}>
             Every frame, a memory. Every pixel, a story.
           </p>
+
+          {/* Upload CTA for authenticated mates */}
+          {isAuthenticated && (
+            <Link
+              to="/upload-to-album"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                padding: '0.55rem 1.3rem', marginBottom: '1.5rem',
+                fontFamily: "'Lato', sans-serif", fontSize: '0.65rem', fontWeight: 700,
+                letterSpacing: '0.14em', textTransform: 'uppercase',
+                background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)',
+                color: '#080d1a', borderRadius: '2px', textDecoration: 'none',
+                boxShadow: '0 0 20px rgba(201,168,76,0.15)',
+                transition: 'all 0.25s',
+                animation: 'fade-up 0.8s 0.48s both',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(201,168,76,0.3)';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(201,168,76,0.15)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              ↑ Upload to Album
+            </Link>
+          )}
 
           {/* ── FILTER TABS ── */}
           <div style={{
@@ -658,7 +765,7 @@ const Album = () => {
                 textTransform: 'uppercase',
                 color: 'rgba(201,168,76,0.3)',
               }}>
-                {visible.length} {visible.length === 1 ? 'photograph' : 'photographs'} · {filter === 'All' ? 'All Semesters' : SEM_LABELS[filter]}
+                {visible.length} {visible.length === 1 ? 'memory' : 'memories'} · {filter === 'All' ? 'All Semesters' : SEM_LABELS[filter]}
               </p>
             </div>
           )}

@@ -16,6 +16,7 @@ import AddMessage from './pages/mates/AddMessage';
 import Profile from './pages/mates/Profile';
 import StickersDisplay from './pages/mates/StickersDisplay';
 import UploadSticker from './pages/mates/UploadSticker';
+import UploadToAlbum from './pages/mates/UploadtoAlbum';
 
 function App() {
   return (
@@ -62,6 +63,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <UploadSticker />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/upload-to-album"
+                element={
+                  <ProtectedRoute>
+                    <UploadToAlbum />
                   </ProtectedRoute>
                 }
               />

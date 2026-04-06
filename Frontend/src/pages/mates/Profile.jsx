@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Layout from '../../components/layout/Layout';
 import Input from '../../components/ui/Input';
 import ProfileCard from '../../components/ui/ProfileCard';
-import { usersAPI } from '../../services/api';
+import { usersAPI, memoriesAPI, photosAPI } from '../../services/api';
 
 const getInitials = (name = '') =>
   name.split(' ').slice(0, 2).map(w => w[0]?.toUpperCase() ?? '').join('');
 
 // ── Stat chip ────────────────────────────────────────────────────────────────
-const StatChip = ({ label, value }) => (
+const StatChip = ({ label, value, loading }) => (
   <div style={{
     background: 'rgba(201,168,76,0.05)',
     border: '1px solid rgba(201,168,76,0.12)',
@@ -20,12 +20,23 @@ const StatChip = ({ label, value }) => (
     flex: 1,
     minWidth: 0,
   }}>
-    <p style={{
-      margin: 0, fontFamily: "'Cormorant Garamond', serif",
-      fontWeight: 700, fontSize: 'clamp(1.2rem, 4vw, 1.6rem)',
-      background: 'linear-gradient(135deg, #c9a84c, #f0d080)',
-      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-    }}>{value}</p>
+    {loading ? (
+      <div style={{
+        height: 'clamp(1.2rem, 4vw, 1.6rem)',
+        width: '2rem', margin: '0 auto 2px',
+        borderRadius: '4px',
+        background: 'linear-gradient(90deg, rgba(201,168,76,0.06) 25%, rgba(201,168,76,0.12) 50%, rgba(201,168,76,0.06) 75%)',
+        backgroundSize: '200% 100%',
+        animation: 'stat-shimmer 1.5s infinite',
+      }} />
+    ) : (
+      <p style={{
+        margin: 0, fontFamily: "'Cormorant Garamond', serif",
+        fontWeight: 700, fontSize: 'clamp(1.2rem, 4vw, 1.6rem)',
+        background: 'linear-gradient(135deg, #c9a84c, #f0d080)',
+        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+      }}>{value}</p>
+    )}
     <p style={{
       margin: '2px 0 0', fontFamily: "'Lato', sans-serif",
       fontSize: 'clamp(0.58rem, 1.5vw, 0.68rem)', fontWeight: 700,
@@ -67,6 +78,38 @@ const Profile = () => {
     github:    user?.socialLinks?.github    ?? '',
     portfolio: user?.socialLinks?.portfolio ?? '',
   });
+
+  // ── Stats ──
+  const [stats, setStats] = useState({ memories: 0, photos: 0, stickers: 0 });
+  const [statsLoading, setStatsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const fetchStats = async () => {
+      setStatsLoading(true);
+      try {
+        // Fetch all three counts in parallel
+        const [memoriesRes, photosRes, stickersRes] = await Promise.all([
+          memoriesAPI.getMyHistory().catch(() => []),
+          photosAPI.getPhotos({ album: 'album', uploadedBy: user._id, limit: 1 }).catch(() => ({ total: 0 })),
+          photosAPI.getPhotos({ album: 'stickers', uploadedBy: user._id, limit: 1 }).catch(() => ({ total: 0 })),
+        ]);
+
+        setStats({
+          memories: Array.isArray(memoriesRes) ? memoriesRes.length : (memoriesRes?.total ?? 0),
+          photos:   photosRes?.total ?? 0,
+          stickers: stickersRes?.total ?? 0,
+        });
+      } catch (err) {
+        console.error('Failed to fetch stats:', err);
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, [user?._id]);
 
   if (!user) return null;
 
@@ -143,9 +186,9 @@ const Profile = () => {
             marginBottom: 'clamp(1rem, 3vw, 1.75rem)',
             flexWrap: 'wrap',
           }}>
-            <StatChip label="Memories" value={user.memoriesCount ?? 0} />
-            <StatChip label="Photos"   value={user.photosCount   ?? 0} />
-            <StatChip label="Stickers" value={user.stickersCount ?? 0} />
+            <StatChip label="Memories" value={stats.memories} loading={statsLoading} />
+            <StatChip label="Photos / Videos"   value={stats.photos}   loading={statsLoading} />
+            <StatChip label="Stickers" value={stats.stickers} loading={statsLoading} />
           </div>
 
           {/* ── Edit / Actions Panel ── */}
@@ -264,6 +307,7 @@ const Profile = () => {
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
           @keyframes prof-fade { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+          @keyframes stat-shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
         `}</style>
       </div>
     </Layout>
