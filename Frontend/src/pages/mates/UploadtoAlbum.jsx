@@ -20,7 +20,7 @@ const SEM_LABELS = {
 };
 
 const MAX_FILES = 10;
-const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 50 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 50 * 1024 * 1024;
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm', 'video/quicktime'];
 
@@ -70,7 +70,7 @@ const DropZone = ({ files, onAdd, onRemove }) => {
       }
       const limit = isVideoFile(f) ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE;
       if (f.size > limit) {
-        errors.push(`"${f.name}" exceeds ${isVideoFile(f) ? '50' : '10'} MB.`);
+        errors.push(`"${f.name}" exceeds 50 MB.`);
         continue;
       }
       if (files.some(existing => existing.name === f.name && existing.size === f.size)) {
@@ -117,7 +117,7 @@ const DropZone = ({ files, onAdd, onRemove }) => {
           {files.length ? 'Add more files' : 'Drop images & videos here'}
         </p>
         <p style={{ margin: 0, fontFamily: "'Lato', sans-serif", fontSize: '0.7rem', color: 'rgba(180,200,225,0.4)' }}>
-          or <span style={{ color: 'rgba(201,168,76,0.65)', textDecoration: 'underline' }}>browse files</span> — Images up to 10 MB · Videos up to 50 MB
+          or <span style={{ color: 'rgba(201,168,76,0.65)', textDecoration: 'underline' }}>browse files</span> — Images & Videos up to 50 MB
         </p>
         {files.length > 0 && (
           <p style={{ margin: 0, fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)' }}>
@@ -737,7 +737,7 @@ const UploadToAlbum = () => {
             }}>
               <li>Select the <strong style={{ color: 'rgba(201,168,76,0.55)' }}>semester</strong> before uploading</li>
               <li>Upload up to <strong style={{ color: 'rgba(201,168,76,0.55)' }}>10 files</strong> at once</li>
-              <li>Images: JPG, PNG, WebP, GIF — max 10 MB each</li>
+              <li>Images: JPG, PNG, WebP, GIF — max 50 MB each</li>
               <li>Videos: MP4, WebM — max 50 MB each</li>
               <li>You can <strong style={{ color: 'rgba(220,80,80,0.6)' }}>delete</strong> your own uploads anytime</li>
             </ul>

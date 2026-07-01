@@ -12,7 +12,7 @@ const DropZone = ({ file, onFile }) => {
 
   const validate = f => {
     if (!f.type.startsWith('image/')) { alert('Only image files are accepted.'); return; }
-    if (f.size > 4 * 1024 * 1024) { alert('Max file size is 4 MB.'); return; }
+    if (f.size > 50 * 1024 * 1024) { alert('Max file size is 50 MB.'); return; }
     onFile(f);
   };
 
