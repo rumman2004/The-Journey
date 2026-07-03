@@ -139,7 +139,7 @@ const Footer = () => {
             
             {/* PORTFOLIO LINK */}
             <a 
-              href="https://rumman-portfolio-ryuu.vercel.app" 
+              href="https://www.rumman-ahmed-portfolio.in/" 
               target="_blank" 
               rel="noopener noreferrer"
               style={{

@@ -57,8 +57,8 @@ const SkeletonNote = ({ index }) => {
         background: v.bg,
         borderRadius: 2,
         padding: 'clamp(0.85rem, 3vw, 1.5rem)',
-        boxShadow: '2px 5px 18px rgba(0,0,0,0.32), 0 1px 3px rgba(0,0,0,0.12)',
-        border: '1px solid rgba(0,0,0,0.04)',
+        boxShadow: '2px 5px 18px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.05)',
+        border: '1px solid rgba(0,0,0,0.08)',
         overflow: 'hidden',
         position: 'relative',
       }}>
@@ -127,8 +127,8 @@ const NoteCard = ({ memory, index, onUpdate }) => {
              z-index 0s`
           : 'none',
         boxShadow: hovered
-          ? '6px 22px 48px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.25)'
-          : '2px 5px 18px rgba(0,0,0,0.34), 0 1px 3px rgba(0,0,0,0.12)',
+          ? '6px 22px 48px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.05)'
+          : '2px 5px 18px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.05)',
         cursor: 'default',
       }}
       onMouseEnter={() => setHovered(true)}
@@ -144,7 +144,7 @@ const NoteCard = ({ memory, index, onUpdate }) => {
         width: tape.width,
         height: 20,
         background: v.tapeColor,
-        border: '1px solid rgba(255,255,255,0.65)',
+        border: '1px solid rgba(0,0,0,0.05)',
         backdropFilter: 'blur(4px)',
         borderRadius: 2,
         zIndex: 3,
@@ -174,7 +174,7 @@ const NoteCard = ({ memory, index, onUpdate }) => {
         padding: 'clamp(0.9rem, 3.5vw, 1.6rem)',
         paddingTop: 'clamp(1rem, 3.5vw, 1.75rem)',
         borderRadius: 2,
-        border: '1px solid rgba(0,0,0,0.045)',
+        border: '1px solid rgba(0,0,0,0.08)',
         overflow: 'hidden',
       }}>
         {/* Paper grain overlay */}
@@ -270,17 +270,16 @@ const TheWall = () => {
 
   return (
     <Layout>
-      <div style={{ minHeight: '100vh', background: '#0a0f1e', overflowX: 'hidden' }}>
+      <div className="min-h-screen font-sans bg-luxury-ivory text-luxury-charcoal journey-page overflow-x-hidden">
 
         {/* ── Background wall texture ── */}
         <div style={{
           position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
           backgroundImage: `
-            radial-gradient(ellipse 80% 60% at 20% 20%, rgba(10,35,65,0.35), transparent 60%),
-            radial-gradient(ellipse 60% 50% at 80% 75%, rgba(8,25,55,0.3), transparent 60%),
-            url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E")
+            radial-gradient(ellipse 80% 60% at 20% 20%, rgba(201,168,76,0.05), transparent 60%),
+            radial-gradient(ellipse 60% 50% at 80% 75%, rgba(201,168,76,0.05), transparent 60%)
           `,
-          backgroundSize: 'cover, cover, 300px 300px',
+          backgroundSize: 'cover, cover',
         }} />
 
         {/* Subtle cork board pattern */}
@@ -308,10 +307,10 @@ const TheWall = () => {
           }} />
 
           <p style={{
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: 'var(--font-sans)',
             fontSize: 'clamp(0.55rem, 1.5vw, 0.62rem)',
-            fontWeight: 700, letterSpacing: '0.36em',
-            textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)',
+            fontWeight: 800, letterSpacing: '0.36em',
+            textTransform: 'uppercase', color: '#8B6914',
             marginBottom: 'clamp(0.6rem, 2vw, 1rem)',
             opacity: headIn ? 1 : 0,
             transform: headIn ? 'translateY(0)' : 'translateY(10px)',
@@ -319,7 +318,7 @@ const TheWall = () => {
           }}>Batch 2023 — 2026</p>
 
           <h1 style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontFamily: 'var(--font-serif)',
             fontWeight: 700,
             fontSize: 'clamp(2.4rem, 11vw, 6.5rem)',
             lineHeight: 1.0, letterSpacing: '-0.02em',
@@ -328,7 +327,7 @@ const TheWall = () => {
             transform: headIn ? 'translateY(0)' : 'translateY(14px)',
             transition: 'opacity 0.7s 0.22s, transform 0.7s 0.22s',
           }}>
-            <span style={{ color: '#f0ece4' }}>The </span>
+            <span style={{ color: '#1F1F1F' }}>The </span>
             <span style={{
               background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080, #c9a84c, #8B6914)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
@@ -351,9 +350,9 @@ const TheWall = () => {
           </div>
 
           <p style={{
-            fontFamily: "'Lato', sans-serif", fontWeight: 300,
-            fontSize: 'clamp(0.78rem, 2.2vw, 1rem)',
-            lineHeight: 1.85, color: 'rgba(180,200,225,0.42)',
+            fontFamily: 'var(--font-sans)', fontWeight: 400,
+            fontSize: 'clamp(0.85rem, 2.2vw, 1.1rem)',
+            lineHeight: 1.85, color: 'rgba(31,31,31,0.6)',
             maxWidth: '400px', margin: '0 auto clamp(1.25rem, 4vw, 2rem)',
             letterSpacing: '0.02em',
             opacity: headIn ? 1 : 0,
@@ -376,7 +375,7 @@ const TheWall = () => {
                 <button className="btn-pin"
                   style={{
                     padding: 'clamp(0.6rem, 2vw, 0.75rem) clamp(1.25rem, 4vw, 1.75rem)',
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: 'var(--font-sans)',
                     fontSize: 'clamp(0.6rem, 1.8vw, 0.7rem)',
                     fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
                     background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)',
@@ -396,18 +395,18 @@ const TheWall = () => {
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                 padding: 'clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.75rem, 2.5vw, 1.1rem)',
                 borderRadius: '2px',
-                border: '1px solid rgba(201,168,76,0.18)',
-                background: 'rgba(201,168,76,0.05)',
+                border: '1px solid rgba(0,0,0,0.08)',
+                background: 'rgba(0,0,0,0.03)',
               }}>
                 <span style={{
-                  fontFamily: "'Cormorant Garamond', serif", fontWeight: 700,
-                  fontSize: 'clamp(0.95rem, 3vw, 1.1rem)', color: '#f0d080',
+                  fontFamily: 'var(--font-serif)', fontWeight: 700,
+                  fontSize: 'clamp(0.95rem, 3vw, 1.1rem)', color: '#8B6914',
                 }}>{memories.length}</span>
                 <span style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: 'var(--font-sans)',
                   fontSize: 'clamp(0.55rem, 1.6vw, 0.62rem)',
                   fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase',
-                  color: 'rgba(201,168,76,0.5)',
+                  color: 'rgba(31,31,31,0.5)',
                 }}>notes pinned</span>
               </div>
             )}
@@ -426,14 +425,14 @@ const TheWall = () => {
               background: 'rgba(220,80,80,0.05)', border: '1px solid rgba(220,80,80,0.18)',
               borderRadius: '12px', maxWidth: '400px', margin: '0 auto',
             }}>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.2rem, 4vw, 1.4rem)', color: '#f87171', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.2rem, 4vw, 1.4rem)', color: '#dc2626', marginBottom: '0.5rem' }}>
                 Connection Lost
               </h3>
-              <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 'clamp(0.75rem, 2vw, 0.82rem)', color: 'rgba(180,200,225,0.5)', marginBottom: '1.5rem' }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.75rem, 2vw, 0.82rem)', color: 'rgba(31,31,31,0.6)', marginBottom: '1.5rem' }}>
                 {error}
               </p>
               <button onClick={() => window.location.reload()} style={{
-                padding: '0.6rem 1.5rem', fontFamily: "'Lato', sans-serif",
+                padding: '0.6rem 1.5rem', fontFamily: 'var(--font-sans)',
                 fontSize: 'clamp(0.6rem, 1.8vw, 0.68rem)', fontWeight: 700,
                 letterSpacing: '0.15em', textTransform: 'uppercase',
                 background: 'linear-gradient(135deg, #8B6914, #c9a84c)', color: '#080d1a',
@@ -448,25 +447,25 @@ const TheWall = () => {
           ) : memories.length === 0 ? (
             <div style={{
               textAlign: 'center', padding: 'clamp(3rem, 10vw, 6rem) 1rem',
-              background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(201,168,76,0.1)',
+              background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)',
               borderRadius: '12px', maxWidth: '400px', margin: '0 auto',
             }}>
               <div style={{
                 width: 52, height: 52, borderRadius: '50%', margin: '0 auto 1rem',
-                border: '1px solid rgba(201,168,76,0.2)', background: 'rgba(201,168,76,0.04)',
+                border: '1px solid rgba(0,0,0,0.1)', background: 'rgba(0,0,0,0.04)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '1.4rem',
               }}>📌</div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.3rem, 4vw, 1.5rem)', fontWeight: 700, color: '#f0ece4', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.3rem, 4vw, 1.5rem)', fontWeight: 700, color: '#1f1f1f', marginBottom: '0.5rem' }}>
                 The Wall is Empty
               </h3>
-              <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 'clamp(0.75rem, 2vw, 0.82rem)', color: 'rgba(180,200,225,0.4)', marginBottom: '1.5rem' }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.75rem, 2vw, 0.82rem)', color: 'rgba(31,31,31,0.5)', marginBottom: '1.5rem' }}>
                 Grab some tape and be the first to share a message!
               </p>
               {isAuthenticated && (
                 <Link to="/create-memory" style={{ textDecoration: 'none' }}>
                   <button style={{
-                    padding: '0.65rem 1.5rem', fontFamily: "'Lato', sans-serif",
+                    padding: '0.65rem 1.5rem', fontFamily: 'var(--font-sans)',
                     fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
                     background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)', color: '#080d1a',
                     border: 'none', borderRadius: '2px', cursor: 'pointer',
@@ -495,11 +494,11 @@ const TheWall = () => {
                     className="btn-load-more"
                     style={{
                       padding: 'clamp(0.6rem, 2vw, 0.75rem) clamp(1.5rem, 5vw, 2.25rem)',
-                      fontFamily: "'Lato', sans-serif",
+                      fontFamily: 'var(--font-sans)',
                       fontSize: 'clamp(0.6rem, 1.8vw, 0.7rem)',
                       fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
-                      background: 'transparent', color: 'rgba(201,168,76,0.75)',
-                      border: '1px solid rgba(201,168,76,0.28)',
+                      background: 'transparent', color: '#8B6914',
+                      border: '1px solid rgba(139,105,20,0.3)',
                       borderRadius: '2px', cursor: loadingMore ? 'default' : 'pointer',
                       transition: 'all 0.25s', minWidth: 'clamp(150px, 40vw, 200px)',
                       display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
@@ -534,29 +533,29 @@ const TheWall = () => {
             <div style={{
               position: 'relative', borderRadius: '12px', overflow: 'hidden',
               padding: 'clamp(1.75rem, 6vw, 4rem) clamp(1.25rem, 5vw, 3rem)',
-              background: 'rgba(255,255,255,0.025)',
-              border: '1px solid rgba(201,168,76,0.15)',
+              background: 'rgba(255,255,255,0.5)',
+              border: '1px solid rgba(0,0,0,0.06)',
               backdropFilter: 'blur(20px)', textAlign: 'center',
             }}>
               <div style={{
                 position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.4) 30%, rgba(240,208,128,0.55) 50%, rgba(201,168,76,0.4) 70%, transparent)',
+                background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.2) 30%, rgba(201,168,76,0.4) 50%, rgba(201,168,76,0.2) 70%, transparent)',
               }} />
               <div style={{ position: 'relative', zIndex: 1 }}>
-                <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 'clamp(0.55rem, 1.5vw, 0.6rem)', fontWeight: 700, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)', marginBottom: '0.85rem' }}>
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.55rem, 1.5vw, 0.6rem)', fontWeight: 800, letterSpacing: '0.32em', textTransform: 'uppercase', color: '#8B6914', marginBottom: '0.85rem' }}>
                   Leave your mark
                 </p>
-                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 700, fontSize: 'clamp(1.3rem, 5vw, 2.25rem)', color: '#f0ece4', lineHeight: 1.2, marginBottom: '0.85rem' }}>
+                <h2 style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: 'clamp(1.3rem, 5vw, 2.25rem)', color: '#1f1f1f', lineHeight: 1.2, marginBottom: '0.85rem' }}>
                   Pin Your Memory
                 </h2>
                 <div style={{ height: '1px', width: 36, background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)', margin: '0 auto 1.25rem' }} />
-                <p style={{ fontFamily: "'Lato', sans-serif", fontWeight: 300, fontSize: 'clamp(0.75rem, 2.2vw, 0.95rem)', color: 'rgba(180,200,225,0.45)', maxWidth: '360px', margin: '0 auto clamp(1.25rem, 4vw, 2rem)', lineHeight: 1.8 }}>
+                <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 400, fontSize: 'clamp(0.85rem, 2.2vw, 0.95rem)', color: 'rgba(31,31,31,0.6)', maxWidth: '360px', margin: '0 auto clamp(1.25rem, 4vw, 2rem)', lineHeight: 1.8 }}>
                   Grab a digital sticky note and pin your thoughts, inside jokes, or memories for the batch to see.
                 </p>
                 <Link to="/create-memory" style={{ textDecoration: 'none' }}>
                   <button className="btn-pin" style={{
                     padding: 'clamp(0.6rem, 2vw, 0.85rem) clamp(1.5rem, 5vw, 2.5rem)',
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: 'var(--font-sans)',
                     fontSize: 'clamp(0.6rem, 1.8vw, 0.7rem)', fontWeight: 700,
                     letterSpacing: '0.15em', textTransform: 'uppercase',
                     background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)', color: '#080d1a',
@@ -573,8 +572,6 @@ const TheWall = () => {
 
         {/* ── Global styles ── */}
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Kalam:wght@300;400;700&display=swap');
-
           /* ── Wall grid: responsive columns ── */
           .wall-grid {
             --gap: clamp(28px, 4vw, 40px);

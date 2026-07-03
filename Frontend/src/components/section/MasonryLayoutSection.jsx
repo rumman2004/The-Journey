@@ -101,29 +101,6 @@ const masonryImages = [
   { id: 85, src: 'https://res.cloudinary.com/ddil24vfs/image/upload/v1775397739/IMG-20260401-WA0000.jpg_rar9og.jpg', alt: 'Graduation Day' },
 ];
 
-// This maps the irregular block pattern to the elements
-const getCardStyles = (index) => {
-  const styles = [
-    // 0: Wide, standard height, shifted slightly up
-    "w-72 sm:w-80 h-64 rounded-[2rem] -translate-y-6",
-    // 1: Medium, short, shifted down, starts darker (simulating the black block)
-    "w-56 sm:w-64 h-48 rounded-[1.5rem] translate-y-12 before:absolute before:inset-0 before:bg-black/60 before:z-10 before:transition-opacity before:duration-500 group-hover/card:before:opacity-0",
-    // 2: Tall, standard width, shifted heavily up
-    "w-64 sm:w-72 h-80 rounded-[2rem] -translate-y-12",
-    // 3: Wide, asymmetrical borders, shifted down
-    "w-80 sm:w-96 h-72 rounded-[2rem_4rem_1rem_3rem] translate-y-8",
-    // 4: Massive block, extreme borders, shifted up
-    "w-80 sm:w-[28rem] h-96 rounded-[4rem_1rem_4rem_1rem] -translate-y-16",
-    // 5: Medium square, simple border, shifted down slightly
-    "w-56 sm:w-64 h-64 rounded-[2rem] translate-y-6",
-    // 6: Wide, short height, shifted up
-    "w-72 sm:w-80 h-48 rounded-[1rem_3rem_1rem_3rem] -translate-y-8",
-    // 7: Tall, shifted heavily down
-    "w-64 sm:w-72 h-80 rounded-[3rem_1rem_3rem_1rem] translate-y-14"
-  ];
-  return styles[index % styles.length];
-};
-
 const InfiniteGallerySection = ({ title = 'Our Journey Gallery' }) => {
   useEffect(() => {
     // Preload masonry images in background for ultra-smooth scrolling
@@ -149,82 +126,100 @@ const InfiniteGallerySection = ({ title = 'Our Journey Gallery' }) => {
     }
   }, []);
 
+  // Split images into two rows
+  const midIndex = Math.ceil(masonryImages.length / 2);
+  const row1Images = masonryImages.slice(0, midIndex);
+  const row2Images = masonryImages.slice(midIndex);
+
+  const renderGlassCard = (item) => (
+    <div 
+      key={`img-${item.id}`} 
+      className="p-2 md:p-3 backdrop-blur-2xl bg-white/40 border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.05)] rounded-[2rem] flex-none group/card transition-all duration-700 hover:-translate-y-2 hover:bg-white/50 hover:shadow-[0_16px_48px_rgba(0,0,0,0.08)] h-[220px] md:h-[320px]"
+    >
+      <div className="h-full relative overflow-hidden rounded-[1.5rem] inline-block">
+        <img 
+          src={item.src} 
+          alt={item.alt} 
+          className="h-full w-auto object-contain transition-transform duration-[1.5s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/card:scale-[1.03]" 
+          loading="lazy"
+        />
+        {/* Elegant Hover Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/80 via-[#1F1F1F]/10 to-transparent z-10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+        <div className="absolute bottom-0 left-0 right-0 p-5 z-20 opacity-0 group-hover/card:opacity-100 transition-all duration-500 translate-y-4 group-hover/card:translate-y-0 text-center">
+          <p className="text-white font-serif text-lg tracking-wide">{item.alt}</p>
+          <p className="text-white/70 font-sans text-[0.6rem] mt-1 tracking-[0.2em] uppercase font-medium">Memories</p>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <section className="relative w-full py-24 overflow-hidden bg-transparent" style={{ animation: 'stk-fade 0.5s ease forwards' }}>
       
-      {/* Top rule matching StickersDisplay theme */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.35) 30%, rgba(240,208,128,0.5) 50%, rgba(201,168,76,0.35) 70%, transparent)' }} />
+      {/* Top rule matching the theme */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, var(--color-luxury-warm-gray) 30%, var(--color-luxury-gold) 50%, var(--color-luxury-warm-gray) 70%, transparent)' }} />
 
       {/* Header Area */}
-      <div className="mb-20 text-left px-4 max-w-[1100px] mx-auto mt-4">
-        <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', margin: '0 0 0.4rem' }}>
-          Through The Years
-        </p>
-        <h2 style={{ margin: 0, fontFamily: "'Cormorant Garamond', serif", fontWeight: 700, fontSize: 'clamp(2rem, 7vw, 3.5rem)', lineHeight: 1 }}>
-          <span style={{ color: '#f0ece4' }}>Journey </span>
-          <span style={{ background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Gallery</span>
+      <div className="mb-16 text-center px-4 max-w-[1100px] mx-auto mt-4">
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <span className="w-1 h-1 rounded-full bg-[#c9a84c]" />
+          <span className="font-sans text-xs md:text-sm font-semibold tracking-[0.25em] uppercase text-[#8B6914]">
+            Through The Years
+          </span>
+          <span className="w-1 h-1 rounded-full bg-[#c9a84c]" />
+        </div>
+        <h2 className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1] text-luxury-graphite font-medium tracking-tight">
+          Journey <span className="italic text-[#c9a84c]">Gallery</span>
         </h2>
-        <p style={{ margin: '0.4rem 0 0', fontFamily: "'Lato', sans-serif", fontWeight: 300, fontSize: '0.82rem', color: 'rgba(180,200,225,0.4)' }}>
-          A snapshot from every year; scroll the life of our batch.
-        </p>
       </div>
 
-      {/* Infinite Marquee Container */}
-      <div className="relative flex w-full items-center overflow-hidden group py-16">
-        
-        {/* Track 1 */}
-        <div className="flex shrink-0 items-center animate-marquee gap-6 pr-6">
-          {masonryImages.map((item, index) => (
-            <div 
-              key={`track1-${item.id}`} 
-              className={`relative flex-none p-2 bg-white/5 border border-white/10 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-300 hover:bg-white/10 group/card overflow-hidden ${getCardStyles(index)}`}
-            >
-              <div className="w-full h-full relative rounded-inherit overflow-hidden" style={{ borderRadius: 'inherit' }}>
-                <img 
-                  src={item.src} 
-                  alt={item.alt} 
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-110" 
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover/card:opacity-100 z-20" />
-              </div>
-            </div>
-          ))}
+      {/* Row 1: Scrolls Left */}
+      <div className="relative flex w-full items-center overflow-hidden group py-4">
+        <div className="flex shrink-0 items-center animate-marquee gap-6 md:gap-8 pr-6 md:pr-8">
+          {row1Images.map(item => renderGlassCard(item))}
         </div>
-
-        {/* Track 2 (Exact Duplicate) */}
-        <div className="flex shrink-0 items-center animate-marquee gap-6 pr-6" aria-hidden="true">
-          {masonryImages.map((item, index) => (
-            <div 
-              key={`track2-${item.id}`} 
-              className={`relative flex-none p-2 bg-white/5 border border-white/10 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-300 hover:bg-white/10 group/card overflow-hidden ${getCardStyles(index)}`}
-            >
-              <div className="w-full h-full relative rounded-inherit overflow-hidden" style={{ borderRadius: 'inherit' }}>
-                <img 
-                  src={item.src} 
-                  alt={item.alt} 
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-110" 
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover/card:opacity-100 z-20" />
-              </div>
-            </div>
-          ))}
+        <div className="flex shrink-0 items-center animate-marquee gap-6 md:gap-8 pr-6 md:pr-8" aria-hidden="true">
+          {row1Images.map(item => renderGlassCard(item))}
         </div>
-
       </div>
+
+      {/* Row 2: Scrolls Right */}
+      <div className="relative flex w-full items-center overflow-hidden group py-4">
+        <div className="flex shrink-0 items-center animate-marquee-reverse gap-6 md:gap-8 pr-6 md:pr-8">
+          {row2Images.map(item => renderGlassCard(item))}
+        </div>
+        <div className="flex shrink-0 items-center animate-marquee-reverse gap-6 md:gap-8 pr-6 md:pr-8" aria-hidden="true">
+          {row2Images.map(item => renderGlassCard(item))}
+        </div>
+      </div>
+
+      {/* Fade gradients for smooth scrolling edges */}
+      <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-luxury-ivory to-transparent pointer-events-none z-30" />
+      <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-luxury-ivory to-transparent pointer-events-none z-30" />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
-        
         @keyframes stk-fade { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
         
         @keyframes marquee {
           0% { transform: translateX(0%); }
           100% { transform: translateX(-100%); }
         }
+        
+        @keyframes marquee-reverse {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(0%); }
+        }
+        
         .animate-marquee {
           animation: marquee 120s linear infinite;
         }
-        .group:hover .animate-marquee {
+        
+        .animate-marquee-reverse {
+          animation: marquee-reverse 120s linear infinite;
+        }
+        
+        .group:hover .animate-marquee,
+        .group:hover .animate-marquee-reverse {
           animation-play-state: paused;
         }
       `}</style>

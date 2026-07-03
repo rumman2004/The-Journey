@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Layout from '../../components/layout/Layout';
 import { photosAPI } from '../../services/api';
+import { FiCamera, FiX, FiFilm, FiArrowLeft, FiCheckCircle, FiUploadCloud, FiTrash2, FiPlay } from 'react-icons/fi';
 
 const SEMESTERS = [
   { value: '1st sem', label: 'Semester I' },
@@ -94,11 +95,11 @@ const DropZone = ({ files, onAdd, onRemove }) => {
         role="button" tabIndex={0}
         onKeyDown={e => e.key === 'Enter' && inputRef.current?.click()}
         style={{
-          border: `2px dashed ${drag ? '#c9a84c' : 'rgba(201,168,76,0.2)'}`,
+          border: `2px dashed ${drag ? 'rgba(139,105,20,0.5)' : 'rgba(0,0,0,0.1)'}`,
           borderRadius: '10px',
           padding: files.length ? 'clamp(1rem, 3vw, 1.5rem) 1rem' : 'clamp(2rem, 6vw, 3rem) 1rem',
           textAlign: 'center', cursor: 'pointer',
-          background: drag ? 'rgba(201,168,76,0.04)' : 'rgba(8,13,26,0.5)',
+          background: drag ? 'rgba(139,105,20,0.04)' : 'rgba(0,0,0,0.02)',
           transition: 'all 0.25s',
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
         }}
@@ -110,17 +111,17 @@ const DropZone = ({ files, onAdd, onRemove }) => {
         />
         <div style={{
           width: 48, height: 48, borderRadius: '50%',
-          background: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.18)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem',
-        }}>📷</div>
-        <p style={{ margin: 0, fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)', color: '#f0ece4' }}>
+          background: 'rgba(139,105,20,0.06)', border: '1px solid rgba(139,105,20,0.18)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', color: '#8B6914'
+        }}><FiCamera /></div>
+        <p style={{ margin: 0, fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)', color: '#1f1f1f' }}>
           {files.length ? 'Add more files' : 'Drop images & videos here'}
         </p>
-        <p style={{ margin: 0, fontFamily: "'Lato', sans-serif", fontSize: '0.7rem', color: 'rgba(180,200,225,0.4)' }}>
-          or <span style={{ color: 'rgba(201,168,76,0.65)', textDecoration: 'underline' }}>browse files</span> — Images & Videos up to 50 MB
+        <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: '0.7rem', color: 'rgba(31,31,31,0.5)' }}>
+          or <span style={{ color: '#8B6914', textDecoration: 'underline' }}>browse files</span> — Images & Videos up to 50 MB
         </p>
         {files.length > 0 && (
-          <p style={{ margin: 0, fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)' }}>
+          <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(139,105,20,0.6)' }}>
             {files.length}/{MAX_FILES} files selected
           </p>
         )}
@@ -131,37 +132,37 @@ const DropZone = ({ files, onAdd, onRemove }) => {
           {files.map((file, i) => (
             <div key={`${file.name}-${i}`} style={{
               position: 'relative', borderRadius: '8px', overflow: 'hidden',
-              border: '1px solid rgba(201,168,76,0.12)', background: 'rgba(8,13,26,0.7)', aspectRatio: '1',
+              border: '1px solid rgba(0,0,0,0.08)', background: 'rgba(0,0,0,0.04)', aspectRatio: '1',
             }}>
               {isVideoFile(file) ? (
                 <div style={{
                   width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
                   alignItems: 'center', justifyContent: 'center',
-                  background: 'linear-gradient(135deg, rgba(139,105,20,0.08), rgba(8,13,26,0.9))', gap: '0.25rem',
+                  background: 'linear-gradient(135deg, rgba(139,105,20,0.08), rgba(0,0,0,0.04))', gap: '0.25rem',
                 }}>
-                  <span style={{ fontSize: '1.6rem' }}>🎬</span>
-                  <span style={{ fontFamily: "'Lato', sans-serif", fontSize: '0.5rem', color: 'rgba(201,168,76,0.5)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Video</span>
+                  <span style={{ fontSize: '1.6rem', display: 'flex', color: 'rgba(139,105,20,0.8)' }}><FiFilm /></span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.5rem', color: 'rgba(139,105,20,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Video</span>
                 </div>
               ) : (
                 <img src={URL.createObjectURL(file)} alt={file.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               )}
-              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,0.85))', padding: '0.3rem 0.35rem', lineHeight: 1.2 }}>
-                <p style={{ margin: 0, fontFamily: "'Lato', sans-serif", fontSize: '0.48rem', color: 'rgba(240,236,228,0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.name}</p>
-                <p style={{ margin: 0, fontFamily: "'Lato', sans-serif", fontSize: '0.42rem', color: 'rgba(201,168,76,0.5)' }}>{formatSize(file.size)}</p>
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,0.6))', padding: '0.3rem 0.35rem', lineHeight: 1.2 }}>
+                <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: '0.48rem', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.name}</p>
+                <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: '0.42rem', color: 'rgba(255,255,255,0.8)' }}>{formatSize(file.size)}</p>
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); onRemove(i); }}
                 aria-label={`Remove ${file.name}`}
                 style={{
                   position: 'absolute', top: '3px', right: '3px', width: 20, height: 20, borderRadius: '50%',
-                  background: 'rgba(8,13,26,0.85)', border: '1px solid rgba(201,168,76,0.3)',
-                  color: 'rgba(201,168,76,0.8)', fontSize: '0.6rem',
+                  background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(0,0,0,0.1)',
+                  color: '#1f1f1f', fontSize: '0.6rem',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   cursor: 'pointer', transition: 'all 0.2s', lineHeight: 1, padding: 0,
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(220,80,80,0.25)'; e.currentTarget.style.borderColor = 'rgba(220,80,80,0.5)'; e.currentTarget.style.color = '#f87171'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(8,13,26,0.85)'; e.currentTarget.style.borderColor = 'rgba(201,168,76,0.3)'; e.currentTarget.style.color = 'rgba(201,168,76,0.8)'; }}
-              >✕</button>
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(220,80,80,0.1)'; e.currentTarget.style.borderColor = 'rgba(220,80,80,0.3)'; e.currentTarget.style.color = '#dc2626'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.85)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'; e.currentTarget.style.color = '#1f1f1f'; }}
+              ><FiX /></button>
             </div>
           ))}
         </div>
@@ -175,24 +176,24 @@ const SemesterSelect = ({ value, onChange }) => (
   <div style={{ marginBottom: '0.2rem' }}>
     <label style={{
       display: 'block', marginBottom: '0.45rem',
-      fontFamily: "'Lato', sans-serif", fontSize: '0.68rem', fontWeight: 700,
-      letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)',
+      fontFamily: 'var(--font-sans)', fontSize: '0.68rem', fontWeight: 700,
+      letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(31,31,31,0.6)',
     }}>Semester *</label>
     <select value={value} onChange={e => onChange(e.target.value)} required style={{
       width: '100%', padding: '0.65rem 0.85rem',
-      fontFamily: "'Lato', sans-serif", fontSize: '0.82rem',
-      background: 'rgba(23,21,45,0.7)', color: value ? '#f0ece4' : 'rgba(180,200,225,0.4)',
-      border: '1px solid rgba(201,168,76,0.18)', borderRadius: '6px',
+      fontFamily: 'var(--font-sans)', fontSize: '0.82rem',
+      background: 'rgba(0,0,0,0.02)', color: value ? '#1f1f1f' : 'rgba(31,31,31,0.5)',
+      border: '1px solid rgba(0,0,0,0.08)', borderRadius: '6px',
       cursor: 'pointer', outline: 'none', transition: 'border-color 0.2s', appearance: 'none',
-      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%23c9a84c' opacity='0.5'%3E%3Cpath d='M6 8L0 0h12z'/%3E%3C/svg%3E")`,
+      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%231f1f1f' opacity='0.4'%3E%3Cpath d='M6 8L0 0h12z'/%3E%3C/svg%3E")`,
       backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.85rem center', backgroundSize: '10px',
     }}
-      onFocus={e => e.currentTarget.style.borderColor = 'rgba(201,168,76,0.45)'}
-      onBlur={e => e.currentTarget.style.borderColor = 'rgba(201,168,76,0.18)'}
+      onFocus={e => e.currentTarget.style.borderColor = 'rgba(139,105,20,0.3)'}
+      onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)'}
     >
-      <option value="" disabled style={{ background: '#0e1225', color: 'rgba(180,200,225,0.4)' }}>Select semester…</option>
+      <option value="" disabled style={{ background: '#FCFBF8', color: 'rgba(31,31,31,0.5)' }}>Select semester…</option>
       {SEMESTERS.map(s => (
-        <option key={s.value} value={s.value} style={{ background: '#0e1225', color: '#f0ece4' }}>{s.label}</option>
+        <option key={s.value} value={s.value} style={{ background: '#FCFBF8', color: '#1f1f1f' }}>{s.label}</option>
       ))}
     </select>
   </div>
@@ -201,14 +202,14 @@ const SemesterSelect = ({ value, onChange }) => (
 // ── Upload Progress ──────────────────────────────────────────────────────────
 const UploadProgress = ({ current, total }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-    <div style={{ height: 4, borderRadius: 2, background: 'rgba(201,168,76,0.1)', overflow: 'hidden' }}>
+    <div style={{ height: 4, borderRadius: 2, background: 'rgba(0,0,0,0.06)', overflow: 'hidden' }}>
       <div style={{
         height: '100%', borderRadius: 2,
         background: 'linear-gradient(90deg, #8B6914, #c9a84c, #f0d080)',
         width: `${(current / total) * 100}%`, transition: 'width 0.4s ease',
       }} />
     </div>
-    <p style={{ margin: 0, textAlign: 'center', fontFamily: "'Lato', sans-serif", fontSize: '0.68rem', letterSpacing: '0.1em', color: 'rgba(201,168,76,0.6)' }}>
+    <p style={{ margin: 0, textAlign: 'center', fontFamily: 'var(--font-sans)', fontSize: '0.68rem', letterSpacing: '0.1em', color: 'rgba(139,105,20,0.8)' }}>
       Uploading {current} of {total}…
     </p>
   </div>
@@ -220,7 +221,7 @@ const DeleteModal = ({ photo, onConfirm, onCancel, deleting }) => (
     onClick={onCancel}
     style={{
       position: 'fixed', inset: 0, zIndex: 9999,
-      background: 'rgba(4,6,16,0.92)', backdropFilter: 'blur(16px)',
+      background: 'rgba(252,251,248,0.92)', backdropFilter: 'blur(8px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '1rem', animation: 'up-fade 0.2s ease forwards',
     }}
@@ -228,23 +229,23 @@ const DeleteModal = ({ photo, onConfirm, onCancel, deleting }) => (
     <div
       onClick={e => e.stopPropagation()}
       style={{
-        background: 'rgba(14,18,37,0.98)', border: '1px solid rgba(201,168,76,0.18)',
+        background: '#FCFBF8', border: '1px solid rgba(0,0,0,0.1)',
         borderRadius: '14px', padding: 'clamp(1.5rem, 5vw, 2rem)',
         maxWidth: '400px', width: '100%', textAlign: 'center',
-        boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
+        boxShadow: '0 30px 80px rgba(0,0,0,0.15)',
       }}
     >
       {/* Thumbnail */}
       <div style={{
         width: 72, height: 72, borderRadius: '10px', overflow: 'hidden',
-        margin: '0 auto 1rem', border: '1px solid rgba(201,168,76,0.15)',
+        margin: '0 auto 1rem', border: '1px solid rgba(0,0,0,0.08)',
       }}>
         {isVideoUrl(photo.imageUrl) ? (
           <div style={{
             width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'linear-gradient(135deg, rgba(139,105,20,0.15), rgba(8,13,26,0.95))',
+            background: 'linear-gradient(135deg, rgba(139,105,20,0.05), rgba(0,0,0,0.02))',
           }}>
-            <span style={{ fontSize: '1.5rem' }}>🎬</span>
+            <span style={{ fontSize: '1.5rem', display: 'flex', color: 'rgba(139,105,20,0.8)' }}><FiFilm /></span>
           </div>
         ) : (
           <img src={photo.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
@@ -252,11 +253,11 @@ const DeleteModal = ({ photo, onConfirm, onCancel, deleting }) => (
       </div>
 
       <h3 style={{
-        fontFamily: "'Cormorant Garamond', serif", fontSize: '1.25rem', fontWeight: 700,
-        color: '#f0ece4', margin: '0 0 0.4rem',
+        fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 700,
+        color: '#1f1f1f', margin: '0 0 0.4rem',
       }}>Delete this upload?</h3>
       <p style={{
-        fontFamily: "'Lato', sans-serif", fontSize: '0.75rem', color: 'rgba(180,200,225,0.4)',
+        fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'rgba(31,31,31,0.6)',
         margin: '0 0 1.25rem', lineHeight: 1.5,
       }}>
         This will permanently remove it from the album. This action cannot be undone.
@@ -267,25 +268,25 @@ const DeleteModal = ({ photo, onConfirm, onCancel, deleting }) => (
           onClick={onCancel}
           disabled={deleting}
           style={{
-            padding: '0.55rem 1.2rem', fontFamily: "'Lato', sans-serif", fontSize: '0.65rem',
+            padding: '0.55rem 1.2rem', fontFamily: 'var(--font-sans)', fontSize: '0.65rem',
             fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
-            background: 'transparent', color: 'rgba(201,168,76,0.7)',
-            border: '1px solid rgba(201,168,76,0.25)', borderRadius: '2px', cursor: 'pointer',
+            background: 'transparent', color: '#8B6914',
+            border: '1px solid rgba(139,105,20,0.3)', borderRadius: '2px', cursor: 'pointer',
           }}
         >Cancel</button>
         <button
           onClick={onConfirm}
           disabled={deleting}
           style={{
-            padding: '0.55rem 1.3rem', fontFamily: "'Lato', sans-serif", fontSize: '0.65rem',
+            padding: '0.55rem 1.3rem', fontFamily: 'var(--font-sans)', fontSize: '0.65rem',
             fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
-            background: deleting ? 'rgba(220,80,80,0.3)' : 'linear-gradient(135deg, #b91c1c, #dc2626, #ef4444)',
+            background: deleting ? 'rgba(220,80,80,0.3)' : '#dc2626',
             color: '#fff', border: 'none', borderRadius: '2px',
             cursor: deleting ? 'not-allowed' : 'pointer',
-            boxShadow: '0 0 14px rgba(220,80,80,0.2)', transition: 'all 0.2s',
+            boxShadow: '0 4px 14px rgba(220,80,80,0.2)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem',
           }}
         >
-          {deleting ? 'Deleting…' : '🗑 Delete'}
+          {deleting ? 'Deleting…' : <><FiTrash2 size={12} /> Delete</>}
         </button>
       </div>
     </div>
@@ -300,27 +301,27 @@ const HistoryCard = ({ photo, onDelete, index }) => {
   return (
     <div style={{
       position: 'relative', borderRadius: '10px', overflow: 'hidden',
-      border: '1px solid rgba(201,168,76,0.1)', background: 'rgba(8,13,26,0.6)',
+      border: '1px solid rgba(0,0,0,0.06)', background: '#FCFBF8',
       transition: 'border-color 0.3s, box-shadow 0.3s, transform 0.3s',
       animation: `up-fade 0.4s ${index * 50}ms ease both`,
     }}
       onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'rgba(201,168,76,0.25)';
-        e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.4)';
+        e.currentTarget.style.borderColor = 'rgba(139,105,20,0.2)';
+        e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.06)';
         e.currentTarget.style.transform = 'translateY(-2px)';
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'rgba(201,168,76,0.1)';
+        e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)';
         e.currentTarget.style.boxShadow = 'none';
         e.currentTarget.style.transform = 'translateY(0)';
       }}
     >
       {/* Media */}
-      <div style={{ position: 'relative', aspectRatio: '1', background: '#0a0e1a' }}>
+      <div style={{ position: 'relative', aspectRatio: '1', background: 'rgba(0,0,0,0.03)' }}>
         {!loaded && (
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'linear-gradient(90deg, rgba(201,168,76,0.04) 25%, rgba(201,168,76,0.08) 50%, rgba(201,168,76,0.04) 75%)',
+            background: 'linear-gradient(90deg, rgba(139,105,20,0.02) 25%, rgba(139,105,20,0.05) 50%, rgba(139,105,20,0.02) 75%)',
             backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite',
           }} />
         )}
@@ -334,12 +335,12 @@ const HistoryCard = ({ photo, onDelete, index }) => {
             <div style={{
               position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
               width: 36, height: 36, borderRadius: '50%',
-              background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)',
-              border: '2px solid rgba(201,168,76,0.3)',
+              background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(4px)',
+              border: '2px solid rgba(0,0,0,0.08)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               pointerEvents: 'none', opacity: loaded ? 1 : 0, transition: 'opacity 0.3s',
             }}>
-              <span style={{ fontSize: '0.9rem', color: 'rgba(240,208,128,0.85)', marginLeft: '2px' }}>▶</span>
+              <span style={{ fontSize: '0.9rem', color: '#1f1f1f', marginLeft: '2px', display: 'flex' }}><FiPlay /></span>
             </div>
           </>
         ) : (
@@ -354,30 +355,30 @@ const HistoryCard = ({ photo, onDelete, index }) => {
         <div style={{
           position: 'absolute', top: '6px', left: '6px',
           padding: '2px 8px', borderRadius: '3px',
-          background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)',
-          border: '1px solid rgba(201,168,76,0.2)',
-          fontFamily: "'Lato', sans-serif", fontSize: '0.5rem', fontWeight: 700,
+          background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(6px)',
+          border: '1px solid rgba(0,0,0,0.1)',
+          fontFamily: 'var(--font-sans)', fontSize: '0.5rem', fontWeight: 700,
           letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: 'rgba(240,208,128,0.8)',
+          color: '#8B6914',
         }}>
           {SEM_LABELS[photo.semester] || photo.semester}
         </div>
       </div>
 
       {/* Info footer */}
-      <div style={{ padding: '0.55rem 0.65rem', borderTop: '1px solid rgba(201,168,76,0.06)' }}>
+      <div style={{ padding: '0.55rem 0.65rem', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
         <p style={{
-          margin: 0, fontFamily: "'Lato', sans-serif", fontSize: '0.6rem',
-          color: 'rgba(180,200,225,0.5)', lineHeight: 1.4,
+          margin: 0, fontFamily: 'var(--font-sans)', fontSize: '0.6rem',
+          color: 'rgba(31,31,31,0.6)', lineHeight: 1.4,
         }}>
           {formatDate(photo.createdAt)}
-          <span style={{ color: 'rgba(201,168,76,0.3)', margin: '0 0.3rem' }}>·</span>
+          <span style={{ color: 'rgba(0,0,0,0.2)', margin: '0 0.3rem' }}>·</span>
           {formatTime(photo.createdAt)}
         </p>
         {photo.caption && (
           <p style={{
-            margin: '0.2rem 0 0', fontFamily: "'Lato', sans-serif", fontSize: '0.58rem',
-            color: 'rgba(180,200,225,0.35)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+            margin: '0.2rem 0 0', fontFamily: 'var(--font-sans)', fontSize: '0.58rem',
+            color: 'rgba(31,31,31,0.5)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
           }}>{photo.caption}</p>
         )}
       </div>
@@ -390,25 +391,23 @@ const HistoryCard = ({ photo, onDelete, index }) => {
         style={{
           position: 'absolute', top: '6px', right: '6px',
           width: 26, height: 26, borderRadius: '50%',
-          background: 'rgba(8,13,26,0.8)', border: '1px solid rgba(220,80,80,0.25)',
-          color: 'rgba(220,80,80,0.7)', fontSize: '0.65rem',
+          background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(220,80,80,0.25)',
+          color: '#dc2626', fontSize: '0.65rem',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', transition: 'all 0.2s', lineHeight: 1, padding: 0,
           opacity: 0.7,
         }}
         onMouseEnter={e => {
-          e.currentTarget.style.background = 'rgba(220,80,80,0.2)';
-          e.currentTarget.style.borderColor = 'rgba(220,80,80,0.5)';
-          e.currentTarget.style.color = '#f87171';
+          e.currentTarget.style.background = 'rgba(220,80,80,0.1)';
+          e.currentTarget.style.borderColor = 'rgba(220,80,80,0.3)';
           e.currentTarget.style.opacity = '1';
         }}
         onMouseLeave={e => {
-          e.currentTarget.style.background = 'rgba(8,13,26,0.8)';
+          e.currentTarget.style.background = 'rgba(255,255,255,0.9)';
           e.currentTarget.style.borderColor = 'rgba(220,80,80,0.25)';
-          e.currentTarget.style.color = 'rgba(220,80,80,0.7)';
           e.currentTarget.style.opacity = '0.7';
         }}
-      >🗑</button>
+      ><FiTrash2 /></button>
     </div>
   );
 };
@@ -514,7 +513,7 @@ const UploadToAlbum = () => {
 
   return (
     <Layout>
-      <div style={{ minHeight: '100vh', background: '#080d1a', overflowX: 'hidden' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-luxury-ivory)', overflowX: 'hidden' }}>
         <section style={{
           position: 'relative', zIndex: 1,
           padding: 'clamp(5.5rem, 14vw, 8rem) clamp(1rem, 5vw, 2rem) clamp(3rem, 8vw, 6rem)',
@@ -524,65 +523,65 @@ const UploadToAlbum = () => {
           {/* Top rule */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.35) 30%, rgba(240,208,128,0.5) 50%, rgba(201,168,76,0.35) 70%, transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.2) 30%, rgba(201,168,76,0.4) 50%, rgba(201,168,76,0.2) 70%, transparent)',
           }} />
 
           {/* Ambient glow */}
           <div style={{
             position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)',
             width: '500px', height: '250px',
-            background: 'radial-gradient(ellipse at top, rgba(139,105,20,0.12), transparent 70%)',
+            background: 'radial-gradient(ellipse at top, rgba(139,105,20,0.06), transparent 70%)',
             pointerEvents: 'none',
           }} />
 
           {/* Back link */}
           <Link to="/album" style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
-            fontFamily: "'Lato', sans-serif", fontSize: '0.68rem', letterSpacing: '0.1em',
-            textTransform: 'uppercase', color: 'rgba(180,200,225,0.38)',
+            fontFamily: 'var(--font-sans)', fontSize: '0.68rem', letterSpacing: '0.1em',
+            textTransform: 'uppercase', color: 'rgba(31,31,31,0.5)',
             textDecoration: 'none', marginBottom: '2rem', transition: 'color 0.2s',
           }}
-            onMouseOver={e => e.currentTarget.style.color = 'rgba(201,168,76,0.65)'}
-            onMouseOut={e => e.currentTarget.style.color = 'rgba(180,200,225,0.38)'}
-          >← Back to Album</Link>
+            onMouseOver={e => e.currentTarget.style.color = '#8B6914'}
+            onMouseOut={e => e.currentTarget.style.color = 'rgba(31,31,31,0.5)'}
+          ><FiArrowLeft /> Back to Album</Link>
 
           {/* Title */}
           <div style={{ marginBottom: '1.75rem' }}>
             <p style={{
-              fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', fontWeight: 700,
+              fontFamily: 'var(--font-sans)', fontSize: '0.6rem', fontWeight: 800,
               letterSpacing: '0.32em', textTransform: 'uppercase',
-              color: 'rgba(201,168,76,0.5)', margin: '0 0 0.5rem',
+              color: '#8B6914', margin: '0 0 0.5rem',
             }}>Mates Only</p>
             <h1 style={{
-              margin: 0, fontFamily: "'Cormorant Garamond', serif", fontWeight: 700,
+              margin: 0, fontFamily: 'var(--font-serif)', fontWeight: 700,
               fontSize: 'clamp(1.8rem, 6vw, 2.75rem)', lineHeight: 1,
             }}>
-              <span style={{ color: '#f0ece4' }}>Upload to </span>
+              <span style={{ color: '#1f1f1f' }}>Upload to </span>
               <span style={{
                 background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}>Album</span>
             </h1>
             <p style={{
-              margin: '0.5rem 0 0', fontFamily: "'Lato', sans-serif", fontWeight: 300,
-              fontSize: '0.82rem', color: 'rgba(180,200,225,0.4)',
+              margin: '0.5rem 0 0', fontFamily: 'var(--font-sans)', fontWeight: 400,
+              fontSize: '0.82rem', color: 'rgba(31,31,31,0.6)',
             }}>Share your memories — images and videos — with the batch.</p>
           </div>
 
           {/* ── Upload Panel ── */}
           <div style={{
-            background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(201,168,76,0.12)',
-            borderRadius: '12px', padding: 'clamp(1.25rem, 4vw, 2rem)', backdropFilter: 'blur(14px)',
+            background: '#FCFBF8', border: '1px solid rgba(0,0,0,0.06)',
+            borderRadius: '12px', padding: 'clamp(1.25rem, 4vw, 2rem)', boxShadow: '0 10px 30px rgba(0,0,0,0.03)',
           }}>
             {success ? (
               <div style={{ textAlign: 'center', padding: 'clamp(1.5rem, 5vw, 2.5rem) 1rem' }}>
-                <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🎉</div>
+                <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem', color: '#16a34a', display: 'flex', justifyContent: 'center' }}><FiCheckCircle /></div>
                 <h2 style={{
-                  fontFamily: "'Cormorant Garamond', serif", fontSize: '1.5rem',
-                  fontWeight: 700, color: '#86efac', margin: '0 0 0.4rem',
+                  fontFamily: 'var(--font-serif)', fontSize: '1.5rem',
+                  fontWeight: 700, color: '#16a34a', margin: '0 0 0.4rem',
                 }}>Upload complete!</h2>
                 <p style={{
-                  fontFamily: "'Lato', sans-serif", fontSize: '0.78rem', color: 'rgba(180,200,225,0.4)',
+                  fontFamily: 'var(--font-sans)', fontSize: '0.78rem', color: 'rgba(31,31,31,0.6)',
                 }}>Your memories have been added to the album.</p>
               </div>
             ) : (
@@ -590,8 +589,8 @@ const UploadToAlbum = () => {
                 {error && (
                   <div style={{
                     background: 'rgba(220,80,80,0.08)', border: '1px solid rgba(220,80,80,0.22)',
-                    color: '#f87171', borderRadius: '6px', padding: '0.65rem 1rem',
-                    fontFamily: "'Lato', sans-serif", fontSize: '0.78rem',
+                    color: '#dc2626', borderRadius: '6px', padding: '0.65rem 1rem',
+                    fontFamily: 'var(--font-sans)', fontSize: '0.78rem',
                   }}>{error}</div>
                 )}
 
@@ -601,25 +600,25 @@ const UploadToAlbum = () => {
 
                 <div style={{
                   display: 'flex', gap: '0.6rem', justifyContent: 'flex-end', flexWrap: 'wrap',
-                  paddingTop: '0.5rem', borderTop: '1px solid rgba(201,168,76,0.08)',
+                  paddingTop: '0.5rem', borderTop: '1px solid rgba(0,0,0,0.06)',
                 }}>
                   <button type="button" onClick={() => navigate('/album')} style={{
-                    padding: '0.55rem 1.1rem', fontFamily: "'Lato', sans-serif", fontSize: '0.65rem',
+                    padding: '0.55rem 1.1rem', fontFamily: 'var(--font-sans)', fontSize: '0.65rem',
                     fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
-                    background: 'transparent', color: 'rgba(201,168,76,0.7)',
-                    border: '1px solid rgba(201,168,76,0.25)', borderRadius: '2px', cursor: 'pointer',
+                    background: 'transparent', color: '#8B6914',
+                    border: '1px solid rgba(139,105,20,0.3)', borderRadius: '2px', cursor: 'pointer',
                   }}>Cancel</button>
                   <button type="submit" disabled={uploading || !files.length || !semester} style={{
-                    padding: '0.55rem 1.25rem', fontFamily: "'Lato', sans-serif", fontSize: '0.65rem',
+                    padding: '0.55rem 1.25rem', fontFamily: 'var(--font-sans)', fontSize: '0.65rem',
                     fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
                     background: (!files.length || !semester || uploading)
                       ? 'rgba(139,105,20,0.35)'
                       : 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)',
                     color: '#080d1a', border: 'none', borderRadius: '2px',
                     cursor: (!files.length || !semester || uploading) ? 'not-allowed' : 'pointer',
-                    boxShadow: '0 0 14px rgba(201,168,76,0.15)', transition: 'all 0.2s',
+                    boxShadow: '0 4px 14px rgba(139,105,20,0.15)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem',
                   }}>
-                    {uploading ? 'Uploading…' : `↑ Upload ${files.length ? `(${files.length})` : ''}`}
+                    {uploading ? 'Uploading…' : <><FiUploadCloud size={14} /> Upload {files.length ? `(${files.length})` : ''}</>}
                   </button>
                 </div>
               </form>
@@ -634,11 +633,11 @@ const UploadToAlbum = () => {
             }}>
               <div style={{
                 flex: 1, height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.2))',
+                background: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.1))',
               }} />
               <h2 style={{
-                margin: 0, fontFamily: "'Cormorant Garamond', serif", fontWeight: 700,
-                fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', color: '#f0ece4', whiteSpace: 'nowrap',
+                margin: 0, fontFamily: 'var(--font-serif)', fontWeight: 700,
+                fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', color: '#1f1f1f', whiteSpace: 'nowrap',
               }}>
                 Your <span style={{
                   background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)',
@@ -647,7 +646,7 @@ const UploadToAlbum = () => {
               </h2>
               <div style={{
                 flex: 1, height: '1px',
-                background: 'linear-gradient(90deg, rgba(201,168,76,0.2), transparent)',
+                background: 'linear-gradient(90deg, rgba(0,0,0,0.1), transparent)',
               }} />
             </div>
 
@@ -659,19 +658,19 @@ const UploadToAlbum = () => {
                 {[...Array(4)].map((_, i) => (
                   <div key={i} style={{
                     borderRadius: '10px', overflow: 'hidden',
-                    border: '1px solid rgba(201,168,76,0.06)',
+                    border: '1px solid rgba(0,0,0,0.06)',
                   }}>
                     <div style={{
                       aspectRatio: '1',
-                      background: 'linear-gradient(90deg, rgba(201,168,76,0.04) 25%, rgba(201,168,76,0.08) 50%, rgba(201,168,76,0.04) 75%)',
+                      background: 'linear-gradient(90deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.02) 75%)',
                       backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite',
                     }} />
                     <div style={{ padding: '0.5rem 0.6rem' }}>
                       <div style={{
                         height: 8, width: '60%', borderRadius: 4,
-                        background: 'rgba(201,168,76,0.06)', marginBottom: '0.35rem',
+                        background: 'rgba(0,0,0,0.04)', marginBottom: '0.35rem',
                       }} />
-                      <div style={{ height: 6, width: '40%', borderRadius: 3, background: 'rgba(201,168,76,0.04)' }} />
+                      <div style={{ height: 6, width: '40%', borderRadius: 3, background: 'rgba(0,0,0,0.02)' }} />
                     </div>
                   </div>
                 ))}
@@ -680,24 +679,24 @@ const UploadToAlbum = () => {
               // Empty state
               <div style={{
                 textAlign: 'center', padding: 'clamp(2rem, 6vw, 3rem) 1rem',
-                background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(201,168,76,0.06)',
+                background: '#FCFBF8', border: '1px dashed rgba(0,0,0,0.1)',
                 borderRadius: '12px',
               }}>
                 <div style={{ fontSize: '2rem', marginBottom: '0.6rem', opacity: 0.35 }}>◇</div>
                 <h3 style={{
-                  fontFamily: "'Cormorant Garamond', serif", fontSize: '1.15rem',
-                  color: '#f0ece4', margin: '0 0 0.3rem', fontWeight: 600,
+                  fontFamily: 'var(--font-serif)', fontSize: '1.15rem',
+                  color: '#1f1f1f', margin: '0 0 0.3rem', fontWeight: 600,
                 }}>No uploads yet</h3>
                 <p style={{
-                  fontFamily: "'Lato', sans-serif", fontSize: '0.75rem', color: 'rgba(180,200,225,0.35)', margin: 0,
+                  fontFamily: 'var(--font-sans)', fontSize: '0.75rem', color: 'rgba(31,31,31,0.5)', margin: 0,
                 }}>Your uploaded photos and videos will appear here.</p>
               </div>
             ) : (
               <>
                 {/* Count */}
                 <p style={{
-                  margin: '0 0 0.75rem', fontFamily: "'Lato', sans-serif", fontSize: '0.6rem',
-                  letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.35)',
+                  margin: '0 0 0.75rem', fontFamily: 'var(--font-sans)', fontSize: '0.6rem',
+                  letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(139,105,20,0.6)',
                 }}>
                   {history.length} {history.length === 1 ? 'upload' : 'uploads'}
                 </p>
@@ -724,22 +723,22 @@ const UploadToAlbum = () => {
           {/* Tips */}
           <div style={{
             marginTop: '1.5rem', padding: '1rem 1.1rem',
-            background: 'rgba(201,168,76,0.03)', border: '1px solid rgba(201,168,76,0.08)',
+            background: 'rgba(139,105,20,0.03)', border: '1px solid rgba(139,105,20,0.08)',
             borderRadius: '8px',
           }}>
             <p style={{
-              margin: '0 0 0.5rem', fontFamily: "'Lato', sans-serif", fontSize: '0.62rem',
-              fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)',
+              margin: '0 0 0.5rem', fontFamily: 'var(--font-sans)', fontSize: '0.62rem',
+              fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(139,105,20,0.6)',
             }}>Quick Tips</p>
             <ul style={{
-              margin: 0, paddingLeft: '1rem', fontFamily: "'Lato', sans-serif",
-              fontSize: '0.72rem', lineHeight: 1.8, color: 'rgba(180,200,225,0.35)',
+              margin: 0, paddingLeft: '1rem', fontFamily: 'var(--font-sans)',
+              fontSize: '0.72rem', lineHeight: 1.8, color: 'rgba(31,31,31,0.6)',
             }}>
-              <li>Select the <strong style={{ color: 'rgba(201,168,76,0.55)' }}>semester</strong> before uploading</li>
-              <li>Upload up to <strong style={{ color: 'rgba(201,168,76,0.55)' }}>10 files</strong> at once</li>
+              <li>Select the <strong style={{ color: '#8B6914' }}>semester</strong> before uploading</li>
+              <li>Upload up to <strong style={{ color: '#8B6914' }}>10 files</strong> at once</li>
               <li>Images: JPG, PNG, WebP, GIF — max 50 MB each</li>
               <li>Videos: MP4, WebM — max 50 MB each</li>
-              <li>You can <strong style={{ color: 'rgba(220,80,80,0.6)' }}>delete</strong> your own uploads anytime</li>
+              <li>You can <strong style={{ color: '#dc2626' }}>delete</strong> your own uploads anytime</li>
             </ul>
           </div>
         </section>
@@ -755,7 +754,6 @@ const UploadToAlbum = () => {
         )}
 
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
           @keyframes up-fade { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
           @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
         `}</style>

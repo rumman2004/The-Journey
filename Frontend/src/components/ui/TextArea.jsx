@@ -10,16 +10,16 @@ const TextArea = ({
   rows = 4,
   ...props
 }) => {
-  const textareaClasses = `w-full px-4 py-3 bg-[rgba(23,21,45,0.7)] text-white border rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] focus:outline-none focus:ring-2 disabled:bg-[rgba(255,255,255,0.05)] disabled:text-twilight-text-muted disabled:cursor-not-allowed transition-all duration-300 resize-vertical ${
+  const textareaClasses = `w-full box-border px-4 py-3 bg-[rgba(0,0,0,0.02)] text-[#1f1f1f] border rounded-md focus:outline-none focus:ring-0 disabled:bg-[rgba(0,0,0,0.05)] disabled:text-[rgba(31,31,31,0.5)] disabled:cursor-not-allowed transition-colors duration-200 resize-vertical font-sans text-[0.85rem] ${
     error
-      ? 'border-red-500/50 focus:ring-red-500/30 focus:border-red-500'
-      : 'border-twilight-border focus:ring-[rgba(161,150,206,0.2)] focus:border-twilight-lavender hover:border-[rgba(205,186,226,0.3)]'
+      ? 'border-[rgba(220,80,80,0.4)]'
+      : 'border-[rgba(0,0,0,0.08)] focus:border-[rgba(139,105,20,0.4)]'
   } ${className}`;
 
   return (
     <div className={`mb-5 ${containerClassName}`}>
       {label && (
-        <label className={`block text-sm font-medium text-twilight-lavender mb-2 tracking-wide ${labelClassName}`}>
+        <label className={`block font-sans text-[0.65rem] font-bold text-[rgba(31,31,31,0.6)] uppercase tracking-[0.18em] mb-1.5 ${labelClassName}`}>
           {label}
         </label>
       )}
@@ -29,10 +29,10 @@ const TextArea = ({
         {...props}
       />
       {error && (
-        <p className="mt-2 text-xs text-red-400 font-medium tracking-wide">{error}</p>
+        <p className="mt-1.5 font-sans text-[0.72rem] text-[#dc2626] m-0">{error}</p>
       )}
       {helperText && !error && (
-        <p className="mt-2 text-xs text-twilight-text-muted">{helperText}</p>
+        <p className="mt-1.5 font-sans text-[0.72rem] text-[rgba(31,31,31,0.5)] m-0">{helperText}</p>
       )}
     </div>
   );

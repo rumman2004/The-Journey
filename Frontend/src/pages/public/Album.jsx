@@ -156,7 +156,7 @@ const Lightbox = ({ photo, photos, onClose, onNav, allowDownload }) => {
       {/* Counter */}
       <div style={{
         position: 'absolute', top: '1.25rem', left: '50%', transform: 'translateX(-50%)',
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: 'var(--font-sans)',
         fontSize: '0.65rem',
         letterSpacing: '0.25em',
         textTransform: 'uppercase',
@@ -324,14 +324,14 @@ const Lightbox = ({ photo, photos, onClose, onNav, allowDownload }) => {
           {/* Caption strip */}
           <div style={{ padding: '14px 8px 16px', textAlign: 'center' }}>
             <p style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: 'var(--font-serif)',
               fontStyle: 'italic',
               fontSize: '0.85rem',
               color: photoIsVideo ? 'rgba(240,236,228,0.6)' : '#4a3f30',
               margin: 0,
             }}>{photo.caption}</p>
             <p style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: 'var(--font-sans)',
               fontSize: '0.6rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -374,41 +374,41 @@ const PhotoCard = ({ photo, onClick, index }) => {
       style={{
         breakInside: 'avoid',
         marginBottom: 'var(--gap)',
-        borderRadius: '10px',
+        borderRadius: '2px', // Sharp gallery edges
         overflow: 'hidden',
         cursor: 'pointer',
         position: 'relative',
-        border: '1px solid rgba(201,168,76,0.08)',
-        background: 'rgba(8,13,26,0.6)',
-        transition: 'transform 0.4s cubic-bezier(0.25,1,0.5,1), box-shadow 0.4s ease, border-color 0.3s',
+        padding: '10px 10px 45px 10px', // Polaroid / gallery matte effect
+        border: '1px solid rgba(0,0,0,0.06)',
+        background: '#FCFBF8', // Pure luxury pearl
+        boxShadow: '0 10px 30px rgba(0,0,0,0.04)',
+        transition: 'transform 0.5s cubic-bezier(0.19,1,0.22,1), box-shadow 0.5s ease',
         opacity: inView ? 1 : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(16px)',
+        transform: inView ? 'translateY(0)' : 'translateY(24px)',
         transitionDelay: inView ? `${(index % 6) * 40}ms` : '0ms',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.transform = 'translateY(-5px) scale(1.015)';
-        e.currentTarget.style.boxShadow = '0 18px 50px rgba(0,0,0,0.55), 0 0 20px rgba(201,168,76,0.08)';
-        e.currentTarget.style.borderColor = 'rgba(201,168,76,0.28)';
+        e.currentTarget.style.transform = 'translateY(-6px) scale(1.01)';
+        e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(201,168,76,0.2)';
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = 'translateY(0) scale(1)';
-        e.currentTarget.style.boxShadow = 'none';
-        e.currentTarget.style.borderColor = 'rgba(201,168,76,0.08)';
+        e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.04)';
       }}
     >
       {/* Skeleton shimmer while loading */}
       {!loaded && (
         <div style={{
-          position: 'absolute', inset: 0, zIndex: 1,
-          background: 'linear-gradient(90deg, rgba(201,168,76,0.04) 25%, rgba(201,168,76,0.08) 50%, rgba(201,168,76,0.04) 75%)',
+          position: 'absolute', top: 10, left: 10, right: 10, bottom: 45, zIndex: 1,
+          background: 'linear-gradient(90deg, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.02) 75%)',
           backgroundSize: '200% 100%',
           animation: 'shimmer 1.5s infinite',
-          minHeight: '120px',
+          minHeight: '160px',
         }} />
       )}
 
       {cardIsVideo ? (
-        <>
+        <div style={{ position: 'relative' }}>
           <video
             src={photo.imageUrl}
             muted
@@ -419,7 +419,7 @@ const PhotoCard = ({ photo, onClick, index }) => {
               width: '100%',
               height: 'auto',
               opacity: loaded ? 1 : 0,
-              transition: 'opacity 0.5s ease',
+              transition: 'opacity 0.6s ease',
             }}
           />
           {/* Video play badge */}
@@ -427,15 +427,15 @@ const PhotoCard = ({ photo, onClick, index }) => {
             position: 'absolute', top: '50%', left: '50%',
             transform: 'translate(-50%, -50%)',
             width: 48, height: 48, borderRadius: '50%',
-            background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)',
-            border: '2px solid rgba(201,168,76,0.35)',
+            background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(4px)',
+            border: '2px solid rgba(201,168,76,0.6)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             pointerEvents: 'none', zIndex: 2,
             opacity: loaded ? 1 : 0, transition: 'opacity 0.3s',
           }}>
-            <span style={{ fontSize: '1.2rem', color: 'rgba(240,208,128,0.9)', marginLeft: '3px' }}>▶</span>
+            <span style={{ fontSize: '1.2rem', color: '#8B6914', marginLeft: '3px' }}>▶</span>
           </div>
-        </>
+        </div>
       ) : (
         <img
           src={photo.imageUrl}
@@ -447,38 +447,43 @@ const PhotoCard = ({ photo, onClick, index }) => {
             width: '100%',
             height: 'auto',
             opacity: loaded ? 1 : 0,
-            transition: 'opacity 0.5s ease',
+            transition: 'opacity 0.6s ease',
           }}
         />
       )}
 
-      {/* Hover overlay */}
-      <div className="photo-overlay" style={{
-        position: 'absolute', inset: 0,
-        background: 'linear-gradient(to top, rgba(8,13,26,0.88) 0%, rgba(8,13,26,0.2) 50%, transparent 100%)',
-        opacity: 0,
-        transition: 'opacity 0.35s ease',
-        display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-        padding: '14px 12px',
+      {/* Gallery Matte Caption */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        height: '45px',
+        display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+        padding: '0 10px',
       }}>
-        {photo.caption && (
+        {photo.caption ? (
           <p style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: 'var(--font-serif)',
             fontStyle: 'italic',
-            fontSize: '0.78rem',
-            color: '#f0ece4',
+            fontSize: '0.85rem',
+            color: '#1f1f1f',
+            fontWeight: 600,
             margin: 0,
-            lineHeight: 1.3,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: '100%',
+            textAlign: 'center'
           }}>{photo.caption}</p>
+        ) : (
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.55rem',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            color: '#8B6914',
+            margin: 0,
+          }}>{cardIsVideo ? '▶ ' : ''}{SEM_LABELS[photo.semester]}</p>
         )}
-        <p style={{
-          fontFamily: "'Lato', sans-serif",
-          fontSize: '0.55rem',
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: 'rgba(201,168,76,0.65)',
-          marginTop: '3px',
-        }}>{cardIsVideo ? '▶ Video · ' : ''}{SEM_LABELS[photo.semester]}</p>
       </div>
     </div>
   );
@@ -537,7 +542,7 @@ const Album = () => {
 
   return (
     <Layout>
-      <div style={{ background: '#080d1a', minHeight: '100vh' }}>
+      <div className="min-h-screen font-sans bg-luxury-ivory text-luxury-charcoal journey-page overflow-x-hidden">
 
         {/* ── PAGE HERO ── */}
         <section style={{
@@ -549,40 +554,32 @@ const Album = () => {
           position: 'relative',
           overflow: 'hidden',
         }}>
-          {/* Ambient glow */}
-          <div style={{
-            position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-            width: '600px', height: '300px',
-            background: 'radial-gradient(ellipse at top, rgba(10,42,74,0.3), transparent 70%)',
-            pointerEvents: 'none',
-          }} />
-
           {/* Top rule */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.35) 30%, rgba(240,208,128,0.5) 50%, rgba(201,168,76,0.35) 70%, transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.2) 30%, rgba(201,168,76,0.4) 50%, rgba(201,168,76,0.2) 70%, transparent)',
           }} />
 
           <p style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: '0.62rem',
-            fontWeight: 700,
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.65rem',
+            fontWeight: 800,
             letterSpacing: '0.38em',
             textTransform: 'uppercase',
-            color: 'rgba(201,168,76,0.5)',
+            color: '#8B6914',
             marginBottom: '1rem',
             animation: 'fade-up 0.8s 0.1s both',
           }}>Batch 2023 — 2026</p>
 
           <h1 style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontFamily: 'var(--font-serif)',
             fontWeight: 700,
             fontSize: 'clamp(2.8rem, 9vw, 6rem)',
             lineHeight: 1.0,
             marginBottom: '1rem',
             animation: 'fade-up 0.8s 0.25s both',
           }}>
-            <span style={{ color: '#f0ece4' }}>The </span>
+            <span style={{ color: '#1F1F1F' }}>The </span>
             <span style={{
               background: 'linear-gradient(135deg, #8B6914 0%, #c9a84c 30%, #f0d080 55%, #c9a84c 75%, #8B6914 100%)',
               WebkitBackgroundClip: 'text',
@@ -596,10 +593,10 @@ const Album = () => {
           </h1>
 
           <p style={{
-            fontFamily: "'Lato', sans-serif",
-            fontWeight: 300,
-            fontSize: 'clamp(0.82rem, 2vw, 1rem)',
-            color: 'rgba(180,200,225,0.45)',
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 400,
+            fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+            color: 'rgba(31,31,31,0.6)',
             maxWidth: '380px',
             margin: '0 auto 2.5rem',
             lineHeight: 1.8,
@@ -616,7 +613,7 @@ const Album = () => {
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                 padding: '0.55rem 1.3rem', marginBottom: '1.5rem',
-                fontFamily: "'Lato', sans-serif", fontSize: '0.65rem', fontWeight: 700,
+                fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 700,
                 letterSpacing: '0.14em', textTransform: 'uppercase',
                 background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)',
                 color: '#080d1a', borderRadius: '2px', textDecoration: 'none',
@@ -656,7 +653,7 @@ const Album = () => {
                   style={{
                     padding: '0.45rem 1.1rem',
                     borderRadius: '2px',
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: 'var(--font-sans)',
                     fontSize: '0.7rem',
                     fontWeight: active ? 700 : 400,
                     letterSpacing: '0.12em',
@@ -664,26 +661,26 @@ const Album = () => {
                     cursor: 'pointer',
                     transition: 'all 0.25s',
                     background: active
-                      ? 'linear-gradient(135deg, rgba(139,105,20,0.3), rgba(201,168,76,0.2))'
-                      : 'rgba(255,255,255,0.03)',
+                      ? 'linear-gradient(135deg, rgba(139,105,20,0.1), rgba(201,168,76,0.2))'
+                      : 'rgba(0,0,0,0.03)',
                     border: active
-                      ? '1px solid rgba(201,168,76,0.45)'
-                      : '1px solid rgba(255,255,255,0.07)',
-                    color: active ? '#f0d080' : 'rgba(180,200,225,0.45)',
+                      ? '1px solid rgba(201,168,76,0.5)'
+                      : '1px solid rgba(0,0,0,0.08)',
+                    color: active ? '#8B6914' : 'rgba(31,31,31,0.6)',
                     boxShadow: active ? '0 0 16px rgba(201,168,76,0.1)' : 'none',
                   }}
                   onMouseEnter={e => {
                     if (!active) {
-                      e.currentTarget.style.borderColor = 'rgba(201,168,76,0.25)';
-                      e.currentTarget.style.color = 'rgba(240,208,128,0.7)';
+                      e.currentTarget.style.borderColor = 'rgba(201,168,76,0.4)';
+                      e.currentTarget.style.color = '#8B6914';
                       e.currentTarget.style.background = 'rgba(201,168,76,0.05)';
                     }
                   }}
                   onMouseLeave={e => {
                     if (!active) {
-                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
-                      e.currentTarget.style.color = 'rgba(180,200,225,0.45)';
-                      e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                      e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)';
+                      e.currentTarget.style.color = 'rgba(31,31,31,0.6)';
+                      e.currentTarget.style.background = 'rgba(0,0,0,0.03)';
                     }
                   }}
                 >
@@ -691,7 +688,7 @@ const Album = () => {
                   <span style={{
                     marginLeft: '0.4rem',
                     fontSize: '0.55rem',
-                    color: active ? 'rgba(240,208,128,0.6)' : 'rgba(180,200,225,0.25)',
+                    color: active ? '#c9a84c' : 'rgba(31,31,31,0.4)',
                   }}>({semCount(cat)})</span>
                 </button>
               );
@@ -716,11 +713,12 @@ const Album = () => {
                   marginBottom: 'var(--gap)',
                   borderRadius: '10px',
                   height: `${160 + (i % 4) * 60}px`,
-                  background: 'linear-gradient(90deg, rgba(8,13,26,0.6) 0%, rgba(201,168,76,0.06) 50%, rgba(8,13,26,0.6) 100%)',
+                  background: 'linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(201,168,76,0.06) 50%, rgba(255,255,255,0.4) 100%)',
                   backgroundSize: '200% 100%',
                   animation: 'shimmer 1.5s infinite',
-                  border: '1px solid rgba(201,168,76,0.05)',
+                  border: '1px solid rgba(0,0,0,0.04)',
                   breakInside: 'avoid',
+                  backdropFilter: 'blur(5px)',
                 }} />
               ))}
             </div>
@@ -741,14 +739,15 @@ const Album = () => {
             </div>
           ) : (
             <div style={{ textAlign: 'center', padding: '6rem 1rem' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.4 }}>◇</div>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem', color: '#1f1f1f', opacity: 0.15 }}>◇</div>
               <h3 style={{
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: 'var(--font-serif)',
                 fontSize: '1.5rem',
-                color: '#f0ece4',
+                color: '#1f1f1f',
+                fontWeight: 600,
                 marginBottom: '0.5rem',
               }}>No photos yet</h3>
-              <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '0.82rem', color: 'rgba(180,200,225,0.4)' }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'rgba(31,31,31,0.5)' }}>
                 Check back soon for memories.
               </p>
             </div>
@@ -759,7 +758,7 @@ const Album = () => {
             <div style={{ textAlign: 'center', marginTop: '3rem' }}>
               <div style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent)', marginBottom: '1.5rem' }} />
               <p style={{
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: 'var(--font-sans)',
                 fontSize: '0.62rem',
                 letterSpacing: '0.28em',
                 textTransform: 'uppercase',
@@ -783,8 +782,6 @@ const Album = () => {
         )}
 
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap');
-
           /* ── Column count: CSS custom property set here as we can't use media queries in inline styles ── */
           div[style*="--col-count"] {
             --col-count: 2;

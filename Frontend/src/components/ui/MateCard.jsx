@@ -18,39 +18,14 @@ import { useState } from 'react';
  * className     {string}
  */
 
-// ── Inline SVG icons (no dep needed) ─────────────────────────────────────────
+import { FiInstagram, FiLinkedin, FiGithub, FiGlobe } from 'react-icons/fi';
+
+// ── Icons ──────────────────────────────────────────────────────────────────
 const Icons = {
-  instagram: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-      <circle cx="12" cy="12" r="4"/>
-      <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
-    </svg>
-  ),
-  linkedin: (
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-      <circle cx="4" cy="4" r="2"/>
-    </svg>
-  ),
-  github: (
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483
-        0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466
-        -.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832
-        .092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688
-        -.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844
-        c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651
-        .64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855
-        0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-    </svg>
-  ),
-  website: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
-    </svg>
-  ),
+  instagram: <FiInstagram />,
+  linkedin: <FiLinkedin />,
+  github: <FiGithub />,
+  website: <FiGlobe />,
   verified: (
     <svg viewBox="0 0 24 24" fill="#3b9eff">
       <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618
@@ -118,6 +93,9 @@ const MateCard = ({
           {/* Progressive dark overlay — heavy at bottom */}
           <div className="mc-overlay" />
 
+          {/* Film Grain Texture Overlay */}
+          <div className="mc-texture" />
+
           {/* Watermark initials — decorative, bottom-right */}
           <div className="mc-watermark" aria-hidden="true">{initials}</div>
         </div>
@@ -167,8 +145,6 @@ const MateCard = ({
 
       {/* ── Scoped styles ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Lato:wght@300;400;700&display=swap');
-
         /* Container query context so everything scales with card width */
         .mc-root {
           container-type: inline-size;
@@ -181,18 +157,15 @@ const MateCard = ({
           border-radius: clamp(10px, 3cqw, 16px);
           overflow: hidden;
           cursor: ${onClick ? 'pointer' : 'default'};
-          background: #111827;
+          background: #FCFBF8;
           /* Portrait aspect ratio */
           aspect-ratio: 3 / 4;
           width: 100%;
           display: flex;
           flex-direction: column;
-          /* Dark neumorphism */
-          border: 1px solid rgba(201,168,76,0.18);
-          box-shadow:
-            5px 5px 14px rgba(0,0,0,0.62),
-            -3px -3px 10px rgba(255,255,255,0.035),
-            inset 0 1px 0 rgba(255,255,255,0.04);
+          /* Light neumorphism */
+          border: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(255,255,255,0.2);
           transition:
             transform 0.32s cubic-bezier(0.25,1,0.5,1),
             box-shadow 0.32s ease,
@@ -204,26 +177,19 @@ const MateCard = ({
         @media (hover: hover) {
           .mc-root:hover {
             transform: translateY(-5px) scale(1.015);
-            box-shadow:
-              8px 20px 38px rgba(0,0,0,0.68),
-              -3px -3px 12px rgba(255,255,255,0.04),
-              0 0 0 1px rgba(201,168,76,0.28);
-            border-color: rgba(201,168,76,0.38);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.3);
+            border-color: rgba(139,105,20,0.4);
           }
         }
 
         .mc-root:active {
           transform: scale(0.97) !important;
-          box-shadow:
-            3px 3px 10px rgba(0,0,0,0.65),
-            -2px -2px 7px rgba(255,255,255,0.025) !important;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
         }
 
         .mc-root:focus-visible {
-          border-color: rgba(201,168,76,0.5);
-          box-shadow:
-            5px 5px 14px rgba(0,0,0,0.6),
-            0 0 0 3px rgba(201,168,76,0.24);
+          border-color: rgba(139,105,20,0.5);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 0 0 3px rgba(139,105,20,0.2);
         }
 
         /* ── Background ── */
@@ -241,19 +207,30 @@ const MateCard = ({
           display: block;
         }
 
-        /* Gradient overlay: clear top, dark bottom */
+        /* Gradient overlay: clear top, dark bottom (reduced height) */
         .mc-overlay {
           position: absolute;
           inset: 0;
           background: linear-gradient(
             to bottom,
-            rgba(0,0,0,0.04) 0%,
-            rgba(0,0,0,0.12) 35%,
-            rgba(0,0,0,0.62) 60%,
-            rgba(0,0,0,0.90) 80%,
-            rgba(0,0,0,0.97) 100%
+            rgba(0, 0, 0, 0.0) 0%,
+            rgba(0, 0, 0, 0.0) 70%,
+            rgba(0, 0, 0, 0.5) 82%,
+            rgba(0, 0, 0, 0.85) 92%,
+            rgba(5, 5, 5, 0.98) 100%
           );
           z-index: 1;
+        }
+
+        /* ── Film Grain Texture ── */
+        .mc-texture {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 1;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+          opacity: 0.3;
+          mix-blend-mode: overlay;
         }
 
         /* ── Watermark initials ── */
@@ -261,12 +238,12 @@ const MateCard = ({
           position: absolute;
           bottom: -2%;
           right: -3%;
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: var(--font-serif);
           font-weight: 700;
           /* Scale with container width */
           font-size: clamp(3rem, 30cqw, 8rem);
           line-height: 1;
-          color: rgba(255,255,255,0.07);
+          color: rgba(255,255,255,0.05);
           user-select: none;
           pointer-events: none;
           z-index: 2;
@@ -295,7 +272,7 @@ const MateCard = ({
         }
 
         .mc-name {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: var(--font-serif);
           font-weight: 700;
           /* 5.5cqw so it always fills the card proportionally */
           font-size: clamp(0.75rem, 5.5cqw, 1.25rem);
@@ -322,10 +299,10 @@ const MateCard = ({
         /* ── Meta text ── */
         .mc-meta {
           margin: 0;
-          font-family: 'Lato', sans-serif;
+          font-family: var(--font-sans);
           font-weight: 400;
           font-size: clamp(0.55rem, 3.4cqw, 0.78rem);
-          color: rgba(180,200,225,0.62);
+          color: rgba(240,236,228,0.7);
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -353,15 +330,15 @@ const MateCard = ({
           width: clamp(24px, 8.5cqw, 38px);
           height: clamp(24px, 8.5cqw, 38px);
           border-radius: clamp(5px, 2cqw, 9px);
-          background: rgba(255,255,255,0.09);
-          border: 1px solid rgba(255,255,255,0.11);
-          color: rgba(200,218,240,0.72);
+          background: rgba(255,255,255,0.12);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          border: 1px solid rgba(255,255,255,0.15);
+          color: rgba(255,255,255,0.9);
           text-decoration: none;
           flex-shrink: 0;
-          /* Inset neumorphic */
-          box-shadow:
-            inset 1px 1px 3px rgba(0,0,0,0.42),
-            inset -1px -1px 2px rgba(255,255,255,0.04);
+          /* Drop shadow to pop from dark background */
+          box-shadow: 0 2px 6px rgba(0,0,0,0.2), inset 1px 1px 3px rgba(255,255,255,0.1);
           transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.18s;
         }
 
@@ -375,9 +352,9 @@ const MateCard = ({
 
         @media (hover: hover) {
           .mc-icon-btn:hover {
-            background: rgba(201,168,76,0.18);
-            border-color: rgba(201,168,76,0.42);
-            color: #f0d080;
+            background: rgba(139,105,20,0.1);
+            border-color: rgba(139,105,20,0.3);
+            color: #8B6914;
             transform: translateY(-2px);
           }
         }
@@ -385,17 +362,17 @@ const MateCard = ({
 
         /* ── No social fallback ── */
         .mc-no-social {
-          font-family: 'Lato', sans-serif;
-          font-weight: 300;
+          font-family: var(--font-sans);
+          font-weight: 400;
           font-size: clamp(0.52rem, 2.9cqw, 0.68rem);
-          color: rgba(180,200,225,0.3);
+          color: rgba(255,255,255,0.6);
           font-style: italic;
           letter-spacing: 0.01em;
           padding: clamp(0.2rem, 1.5cqw, 0.38rem) clamp(0.4rem, 2.5cqw, 0.7rem);
           border-radius: clamp(5px, 2cqw, 8px);
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.06);
-          box-shadow: inset 1px 1px 3px rgba(0,0,0,0.42);
+          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

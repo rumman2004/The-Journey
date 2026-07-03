@@ -12,8 +12,8 @@ const getInitials = (name = '') =>
 // ── Stat chip ────────────────────────────────────────────────────────────────
 const StatChip = ({ label, value, loading }) => (
   <div style={{
-    background: 'rgba(201,168,76,0.05)',
-    border: '1px solid rgba(201,168,76,0.12)',
+    background: 'rgba(139,105,20,0.03)',
+    border: '1px solid rgba(139,105,20,0.1)',
     borderRadius: '8px',
     padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem)',
     textAlign: 'center',
@@ -25,7 +25,7 @@ const StatChip = ({ label, value, loading }) => (
         height: 'clamp(1.2rem, 4vw, 1.6rem)',
         width: '2rem', margin: '0 auto 2px',
         borderRadius: '4px',
-        background: 'linear-gradient(90deg, rgba(201,168,76,0.06) 25%, rgba(201,168,76,0.12) 50%, rgba(201,168,76,0.06) 75%)',
+        background: 'linear-gradient(90deg, rgba(139,105,20,0.06) 25%, rgba(139,105,20,0.12) 50%, rgba(139,105,20,0.06) 75%)',
         backgroundSize: '200% 100%',
         animation: 'stat-shimmer 1.5s infinite',
       }} />
@@ -33,7 +33,7 @@ const StatChip = ({ label, value, loading }) => (
       <p style={{
         margin: 0, fontFamily: "'Cormorant Garamond', serif",
         fontWeight: 700, fontSize: 'clamp(1.2rem, 4vw, 1.6rem)',
-        background: 'linear-gradient(135deg, #c9a84c, #f0d080)',
+        background: 'linear-gradient(135deg, #8B6914, #c9a84c, #f0d080)',
         WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
       }}>{value}</p>
     )}
@@ -41,7 +41,7 @@ const StatChip = ({ label, value, loading }) => (
       margin: '2px 0 0', fontFamily: "'Lato', sans-serif",
       fontSize: 'clamp(0.58rem, 1.5vw, 0.68rem)', fontWeight: 700,
       letterSpacing: '0.18em', textTransform: 'uppercase',
-      color: 'rgba(180,200,225,0.4)',
+      color: 'rgba(31,31,31,0.6)',
     }}>{label}</p>
   </div>
 );
@@ -49,11 +49,11 @@ const StatChip = ({ label, value, loading }) => (
 // ── Gold panel ───────────────────────────────────────────────────────────────
 const Panel = ({ children, style = {} }) => (
   <div style={{
-    background: 'rgba(255,255,255,0.025)',
-    border: '1px solid rgba(201,168,76,0.12)',
+    background: '#FCFBF8',
+    border: '1px solid rgba(0,0,0,0.06)',
     borderRadius: '12px',
     padding: 'clamp(1.25rem, 4vw, 2rem)',
-    backdropFilter: 'blur(14px)',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.03)',
     ...style,
   }}>
     {children}
@@ -151,13 +151,13 @@ const Profile = () => {
 
   return (
     <Layout>
-      <div style={{ minHeight: '100vh', background: '#080d1a', color: '#f0ece4', overflowX: 'hidden' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-luxury-ivory)', color: '#1f1f1f', overflowX: 'hidden' }}>
 
         {/* Ambient glow */}
         <div style={{
           position: 'fixed', top: '10%', right: '20%', zIndex: 0, pointerEvents: 'none',
           width: 'clamp(200px, 40vw, 450px)', height: 'clamp(200px, 40vw, 450px)',
-          background: 'radial-gradient(circle, rgba(10,42,74,0.22), transparent 70%)',
+          background: 'radial-gradient(circle, rgba(139,105,20,0.04), transparent 70%)',
           borderRadius: '50%',
         }} />
 
@@ -170,7 +170,7 @@ const Profile = () => {
           {/* Top rule */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.35) 30%, rgba(240,208,128,0.5) 50%, rgba(201,168,76,0.35) 70%, transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.2) 30%, rgba(201,168,76,0.4) 50%, rgba(201,168,76,0.2) 70%, transparent)',
           }} />
 
           {/* ── Profile Card ── */}
@@ -214,10 +214,10 @@ const Profile = () => {
             {editing ? (
               <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
                 {/* Section label */}
-                <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', margin: 0 }}>
+                <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#8B6914', margin: 0 }}>
                   Edit Profile
                 </p>
-                <div style={{ height: '1px', background: 'linear-gradient(90deg, rgba(201,168,76,0.2), transparent)', marginBottom: '0.25rem' }} />
+                <div style={{ height: '1px', background: 'linear-gradient(90deg, rgba(201,168,76,0.18), transparent)', marginBottom: '0.25rem' }} />
 
                 {/* Avatar upload */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
@@ -235,13 +235,13 @@ const Profile = () => {
                   </div>
                   <label style={{
                     fontFamily: "'Lato', sans-serif", fontSize: '0.72rem',
-                    color: 'rgba(201,168,76,0.65)', cursor: 'pointer',
-                    border: '1px solid rgba(201,168,76,0.25)', borderRadius: '2px',
+                    color: '#8B6914', cursor: 'pointer',
+                    border: '1px solid rgba(139,105,20,0.3)', borderRadius: '2px',
                     padding: '0.45rem 0.9rem', letterSpacing: '0.1em', textTransform: 'uppercase',
                     transition: 'all 0.2s',
                   }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(201,168,76,0.5)'}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(201,168,76,0.25)'}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,105,20,0.05)'; e.currentTarget.style.borderColor = 'rgba(139,105,20,0.5)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(139,105,20,0.3)'; }}
                   >
                     Change Photo
                     <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
@@ -266,10 +266,10 @@ const Profile = () => {
               </form>
             ) : (
               <div>
-                <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', margin: '0 0 0.75rem' }}>
+                <p style={{ fontFamily: "'Lato', sans-serif", fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#8B6914', margin: '0 0 0.75rem' }}>
                   Actions
                 </p>
-                <div style={{ height: '1px', background: 'linear-gradient(90deg, rgba(201,168,76,0.2), transparent)', marginBottom: '1rem' }} />
+                <div style={{ height: '1px', background: 'linear-gradient(90deg, rgba(201,168,76,0.18), transparent)', marginBottom: '1rem' }} />
                 <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
                   <GoldOutlineBtn onClick={() => { setEditing(true); setSaveSuccess(false); }}>✎ Edit Profile</GoldOutlineBtn>
                   <Link to="/create-memory" style={{ textDecoration: 'none' }}><GoldSolidBtn>+ Add Message</GoldSolidBtn></Link>
@@ -330,17 +330,17 @@ const GoldOutlineBtn = ({ children, type = 'button', onClick }) => (
   <button type={type} onClick={onClick} style={{
     padding: '0.55rem 1.25rem', fontFamily: "'Lato', sans-serif",
     fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
-    background: 'transparent', color: 'rgba(201,168,76,0.75)',
-    border: '1px solid rgba(201,168,76,0.28)', borderRadius: '2px',
+    background: 'transparent', color: '#8B6914',
+    border: '1px solid rgba(139,105,20,0.3)', borderRadius: '2px',
     cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap',
   }}
   onMouseEnter={e => {
-    e.currentTarget.style.background = 'rgba(201,168,76,0.08)';
-    e.currentTarget.style.borderColor = 'rgba(201,168,76,0.5)';
+    e.currentTarget.style.background = 'rgba(139,105,20,0.05)';
+    e.currentTarget.style.borderColor = 'rgba(139,105,20,0.5)';
   }}
   onMouseLeave={e => {
     e.currentTarget.style.background = 'transparent';
-    e.currentTarget.style.borderColor = 'rgba(201,168,76,0.28)';
+    e.currentTarget.style.borderColor = 'rgba(139,105,20,0.3)';
   }}
   >{children}</button>
 );

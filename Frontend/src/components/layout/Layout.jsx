@@ -7,16 +7,15 @@ import Footer from './Footer';
  * - Adds `pt-16 md:pt-20` to <main> to compensate for the fixed navbar height.
  * - showFooter prop lets individual pages opt out (e.g., TheJourney has its own footer).
  */
-const Layout = ({ children, showFooter = true }) => {
+const Layout = ({ children, showFooter = true, noPaddingTop = false }) => {
   return (
     <div
-      className="min-h-screen flex flex-col"
-      style={{ background: '#080d1a', color: '#f0ece4' }}
+      className="min-h-screen flex flex-col font-body-md text-on-surface bg-background dark:bg-background transition-colors duration-300"
     >
-      <Navbar />
+      <Navbar/>
 
       {/* Offset for fixed navbar */}
-      <main className="flex-grow pt-16 md:pt-20">
+      <main className={`flex-grow ${noPaddingTop ? '' : 'pt-16 md:pt-20'}`}>
         {children}
       </main>
 

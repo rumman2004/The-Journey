@@ -59,35 +59,46 @@ const MessageFrame = ({ memory, onUpdate }) => {
             </p>
           </div>
         </div>
-        <span className="px-2.5 py-0.5 text-[0.7rem] uppercase tracking-wider font-bold rounded-sm bg-black/5 text-gray-600 border border-black/10">
+        <span className="px-2.5 py-1 text-[0.65rem] uppercase tracking-[0.1em] font-bold rounded bg-[#0e1525]/5 text-gray-700 border border-black/10">
           {memory.category}
         </span>
       </div>
 
       {/* Content */}
       <div className="flex-1">
-        <p className="text-gray-800 text-lg whitespace-pre-wrap leading-relaxed mb-4">
+        <p 
+          className="text-gray-800 whitespace-pre-wrap mb-5"
+          style={{
+            fontFamily: 'var(--font-handwritten)',
+            fontSize: '1.25rem',
+            lineHeight: '28px', /* Matches ruled lines distance in TheWall.jsx */
+            paddingTop: '2px' /* Slight nudge to align text baseline with the ruled line */
+          }}
+        >
           {memory.content}
         </p>
 
         {/* Photos / Media */}
         {memory.photos && memory.photos.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+          <div className={`grid gap-3 mb-6 ${memory.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {memory.photos.map((photo, index) => {
               const isVideo = photo.match(/\.(mp4|webm|ogg)$/i);
+              const rotation = index % 2 === 0 ? '-1deg' : '1.5deg';
               return isVideo ? (
                 <video
                   key={index}
                   src={photo}
                   controls
-                  className="w-full h-32 object-cover rounded-md border border-gray-300 shadow-sm"
+                  className="w-full h-40 object-cover bg-white p-1.5 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100"
+                  style={{ transform: `rotate(${rotation})` }}
                 />
               ) : (
                 <img
                   key={index}
                   src={photo}
                   alt={`Memory photo ${index + 1}`}
-                  className="w-full h-32 object-cover rounded-md border border-gray-300 shadow-sm cursor-pointer hover:opacity-80 transition-opacity"
+                  className={`w-full ${memory.photos.length === 1 ? 'max-h-64' : 'h-32'} object-cover bg-white p-1.5 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 cursor-pointer hover:scale-[1.02] transition-transform`}
+                  style={{ transform: `rotate(${rotation})` }}
                   onClick={() => window.open(photo, '_blank')}
                 />
               );
