@@ -11,7 +11,7 @@
 
 > *A premium, full-stack web application built to preserve, celebrate, and relive the college memories of BCA Batch 2023-26.*
 
-**The Journey** is more than just a website — it's a digital time capsule. Designed with a sleek dark-mode aesthetic powered by glassmorphism, smooth Framer Motion animations, and a masonry gallery layout, it captures the spirit of three years of friendship, growth, and shared experiences.
+**The Journey** is more than just a website — it's a digital time capsule. Designed with a premium luxury ivory and gold aesthetic powered by glassmorphism, smooth GSAP animations, and a masonry gallery layout, it captures the spirit of three years of friendship, growth, and shared experiences.
 
 ---
 
@@ -50,7 +50,7 @@
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                        CLIENT                           │
-│  React 19 · Vite 8 · TailwindCSS 4 · Framer Motion     │
+│  React 19 · Vite 8 · TailwindCSS 4 · GSAP              │
 │  Deployed on Vercel (SPA with client-side routing)      │
 └──────────────────────┬──────────────────────────────────┘
                        │  REST API (fetch)
@@ -83,7 +83,7 @@
 | **React** | 19 | UI component library |
 | **Vite** | 8 | Build tool and dev server |
 | **TailwindCSS** | 4 | Utility-first CSS framework |
-| **Framer Motion** | 12 | Animations and micro-interactions |
+| **GSAP** | 3.15 | Animations and micro-interactions |
 | **React Router** | 7 | Client-side routing |
 | **Lucide React** | 1.7 | Icon library |
 
