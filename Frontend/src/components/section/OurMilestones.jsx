@@ -59,14 +59,14 @@ const timelineEvents = [
     title: "Teacher's Day Celebration",
     description: 'Black and yellow balloons, heartfelt speeches, and a room full of gratitude. Honouring the people who never gave up on us.',
     caption: 'Celebrating the guiding lights of our college life.',
-    image: 'https://res.cloudinary.com/ddil24vfs/image/upload/v1775326075/20250830_142311.jpg_mlxmrx.jpg'
+    image: 'https://res.cloudinary.com/ddil24vfs/image/upload/v1775326094/20250905_142410.jpg_gwsvn0.jpg'
   },
   {
     year: '2025', month: 'September', index: '09',
     title: "The Freshers' Fiesta",
     description: 'A massive group photo, a room full of energy, and the moment we truly felt like seniors. The cycle of welcome, continued.',
     caption: 'A full house! Celebrating the arrival of the junior batch.',
-    image: 'https://res.cloudinary.com/ddil24vfs/image/upload/v1775326094/20250905_142410.jpg_gwsvn0.jpg'
+    image: 'https://res.cloudinary.com/ddil24vfs/image/upload/v1775326075/20250830_142311.jpg_mlxmrx.jpg'
   },
   {
     year: '2025', month: 'December', index: '10',
