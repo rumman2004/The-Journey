@@ -144,9 +144,17 @@ const deleteMemory = async (req, res) => {
     // Delete associated photos from Cloudinary
     if (memory.photos && memory.photos.length > 0) {
       for (const photoUrl of memory.photos) {
-        // Extract public ID from Cloudinary URL
-        const publicId = photoUrl.split('/').pop().split('.')[0];
-        await cloudinary.uploader.destroy(publicId);
+        // Extract the full public ID (folder + name, minus version & extension)
+        // from a Cloudinary URL like:
+        //   https://res.cloudinary.com/<cloud>/image/upload/v123/college-memories/abc.jpg
+        const afterUpload = photoUrl.split('/upload/')[1];
+        if (!afterUpload) continue;
+        const segments = afterUpload.split('/');
+        if (/^v\d+$/.test(segments[0])) segments.shift(); // drop version segment
+        const withExt = segments.join('/');
+        const dot = withExt.lastIndexOf('.');
+        const publicId = dot > -1 ? withExt.substring(0, dot) : withExt;
+        if (publicId) await cloudinary.uploader.destroy(publicId);
       }
     }
 

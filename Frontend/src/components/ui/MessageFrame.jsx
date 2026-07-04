@@ -40,7 +40,10 @@ const MessageFrame = ({ memory, onUpdate }) => {
     }
   };
 
-  const isLiked = user && memory.likes.includes(user._id);
+  const likes = memory.likes || [];
+  const comments = memory.comments || [];
+  const author = memory.author || {};
+  const isLiked = user && likes.includes(user._id);
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -48,14 +51,14 @@ const MessageFrame = ({ memory, onUpdate }) => {
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <img
-            src={memory.author.profilePicture || '/default-avatar.png'}
-            alt={memory.author.name}
+            src={author.profilePicture || '/default-avatar.png'}
+            alt={author.name || 'Unknown'}
             className="w-10 h-10 rounded-full object-cover border border-gray-300 shadow-sm"
           />
           <div>
             <h3 className="text-xl font-bold text-gray-900 leading-none">{memory.title}</h3>
             <p className="text-xs text-gray-500 mt-1 font-medium">
-              By {memory.author.name} <span className="px-1 text-gray-400">•</span> {formatDate(memory.memoryDate)}
+              By {author.name || 'Unknown'} <span className="px-1 text-gray-400">•</span> {formatDate(memory.memoryDate)}
             </p>
           </div>
         </div>
@@ -82,7 +85,7 @@ const MessageFrame = ({ memory, onUpdate }) => {
         {memory.photos && memory.photos.length > 0 && (
           <div className={`grid gap-3 mb-6 ${memory.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {memory.photos.map((photo, index) => {
-              const isVideo = photo.match(/\.(mp4|webm|ogg)$/i);
+              const isVideo = typeof photo === 'string' && /\.(mp4|webm|ogg)$/i.test(photo);
               const rotation = index % 2 === 0 ? '-1deg' : '1.5deg';
               return isVideo ? (
                 <video
@@ -136,7 +139,7 @@ const MessageFrame = ({ memory, onUpdate }) => {
               <svg className="w-4 h-4" fill={isLiked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isLiked ? 2 : 1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              <span>{memory.likes.length}</span>
+              <span>{likes.length}</span>
             </button>
 
             {/* Comments Button */}
@@ -147,7 +150,7 @@ const MessageFrame = ({ memory, onUpdate }) => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <span>{memory.comments.length}</span>
+              <span>{comments.length}</span>
             </button>
           </div>
 
@@ -160,17 +163,17 @@ const MessageFrame = ({ memory, onUpdate }) => {
         {showComments && (
           <div className="mt-4 pt-3 border-t border-gray-300/60 transition-opacity">
             {/* Existing Comments */}
-            {memory.comments.map((comment, index) => (
+            {comments.map((comment, index) => (
               <div key={index} className="mb-3 pb-3 border-b border-gray-200/50 last:border-b-0 last:pb-0 last:mb-0">
                 <div className="flex items-start space-x-2.5">
                   <img
-                    src={comment.user.profilePicture || '/default-avatar.png'}
-                    alt={comment.user.name}
+                    src={comment.user?.profilePicture || '/default-avatar.png'}
+                    alt={comment.user?.name || 'Unknown'}
                     className="w-7 h-7 rounded-full object-cover border border-gray-300 mt-0.5"
                   />
                   <div className="flex-1 overflow-hidden">
                     <p className="text-[14px] leading-snug">
-                      <span className="font-bold text-gray-800 mr-2">{comment.user.name}</span>
+                      <span className="font-bold text-gray-800 mr-2">{comment.user?.name || 'Unknown'}</span>
                       <span className="text-gray-700">{comment.content}</span>
                     </p>
                     <p className="text-[10px] text-gray-400 mt-1 font-medium">

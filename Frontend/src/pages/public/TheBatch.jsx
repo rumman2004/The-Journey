@@ -123,9 +123,15 @@ const TheBatch = () => {
           const arr = Array.isArray(response)
             ? response
             : (response.users || response.data || []);
-          setUsers([...arr].sort((a, b) =>
-            (a.rollNumber ?? Number.MAX_SAFE_INTEGER) - (b.rollNumber ?? Number.MAX_SAFE_INTEGER)
-          ));
+          setUsers([...arr].sort((a, b) => {
+            // Coerce to number so non-numeric / missing roll numbers don't
+            // produce NaN and leave the list unsorted.
+            const ra = Number(a.rollNumber);
+            const rb = Number(b.rollNumber);
+            const na = Number.isNaN(ra) ? Number.MAX_SAFE_INTEGER : ra;
+            const nb = Number.isNaN(rb) ? Number.MAX_SAFE_INTEGER : rb;
+            return na - nb;
+          }));
         }
       } catch {
         setError('Failed to load batch members');

@@ -28,7 +28,10 @@ const createJourneyEvent = async (req, res) => {
 
     // Support direct upload via files just like photos if provided
     if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.buffer, {
+      // Convert buffer to a Data URI — Cloudinary's upload() does not accept raw Buffers
+      const b64 = Buffer.from(req.file.buffer).toString('base64');
+      const dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
+      const result = await cloudinary.uploader.upload(dataURI, {
         folder: 'college-journeys',
         resource_type: 'image'
       });

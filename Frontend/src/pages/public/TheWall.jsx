@@ -244,9 +244,12 @@ const TheWall = () => {
       if (response.memories) {
         setMemories(prev => append ? [...prev, ...response.memories] : response.memories);
         setHasMore(response.memories.length === 20);
+        setError('');
       }
     } catch {
-      setError('Failed to load messages from the wall');
+      // Only surface the full-screen error on the initial load — a failed
+      // "Load More" must not wipe the notes already on screen.
+      if (!append) setError('Failed to load messages from the wall');
     }
   }, []);
 
@@ -266,7 +269,9 @@ const TheWall = () => {
     setLoadingMore(false);
   };
 
-  const handleMemoryUpdate = () => fetchMemories(1, false);
+  // Reset back to page 1 and keep `page` state in sync so the next
+  // "Load More" doesn't skip pages after a like/comment refetch.
+  const handleMemoryUpdate = () => { setPage(1); fetchMemories(1, false); };
 
   return (
     <Layout>

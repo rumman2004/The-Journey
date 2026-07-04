@@ -110,7 +110,7 @@ const STATIC_PHOTOS = [
   { id: '77', imageUrl: 'https://res.cloudinary.com/ddil24vfs/image/upload/v1775397739/IMG-20260401-WA0000.jpg_rar9og.jpg',    semester: '6th sem' },
 ];
 
-const CATEGORIES = ['All', '1st sem', '2nd sem', '3rd sem', '4th sem', '5th sem', '6th sem'];
+const CATEGORIES = ['All', '1st sem', '2nd sem', '3rd sem', '4th sem', '5th sem', '6th sem', 'General'];
 
 const SEM_LABELS = {
   'All': 'All Semesters',
@@ -120,6 +120,7 @@ const SEM_LABELS = {
   '4th sem': 'Semester IV',
   '5th sem': 'Semester V',
   '6th sem': 'Semester VI',
+  'General': 'General',
 };
 
 // ── Lightbox ──────────────────────────────────────────────────────────────────

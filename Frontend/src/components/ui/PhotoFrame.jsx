@@ -33,10 +33,11 @@ const PhotoFrame = ({ photo, onUpdate }) => {
     document.body.removeChild(link);
   };
 
-  const isLiked = user && photo.likes.includes(user._id);
+  const likes = photo.likes || [];
+  const isLiked = user && likes.includes(user._id);
 
   return (
-    <Card className="overflow-hidden hover:shadow-[0_8px_30px_rgba(205,186,226,0.15)] transition-shadow border border-twilight-border backdrop-blur-md bg-opacity-[0.15]">
+    <Card className="group overflow-hidden hover:shadow-[0_8px_30px_rgba(205,186,226,0.15)] transition-shadow border border-twilight-border backdrop-blur-md bg-opacity-[0.15]">
       <div className="relative">
         {/* Photo */}
         <div className="aspect-square overflow-hidden bg-[rgba(23,21,45,0.7)]">
@@ -108,7 +109,7 @@ const PhotoFrame = ({ photo, onUpdate }) => {
         {/* Author and Date */}
         <div className="flex items-center justify-between text-xs font-medium text-twilight-text-muted">
           <span className="flex items-center space-x-1.5 text-twilight-primary">
-            <span>By {photo.uploadedBy.name}</span>
+            <span>By {photo.uploadedBy?.name || 'Unknown'}</span>
           </span>
           <span className="opacity-80">{formatDate(photo.createdAt)}</span>
         </div>
@@ -129,7 +130,7 @@ const PhotoFrame = ({ photo, onUpdate }) => {
             <svg className="w-4 h-4" fill={isLiked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isLiked ? 2 : 1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
-            <span className="font-semibold">{photo.likes.length}</span>
+            <span className="font-semibold">{likes.length}</span>
           </Button>
 
           {/* Memory Link */}

@@ -10,7 +10,7 @@ import { useState } from 'react';
  * rollNumber    {number|string}
  * batch         {string}        – e.g. "2023-26"
  * isVerified    {boolean}
- * socialLinks   {object}        – { instagram, linkedin, github, website }
+ * socialLinks   {object}        – { instagram, linkedin, github, portfolio }
  * memoriesCount {number}
  * photosCount   {number}
  * showEmail     {boolean}
@@ -68,7 +68,7 @@ const MateCard = ({
     { key: 'instagram', href: socialLinks?.instagram, icon: Icons.instagram, label: 'Instagram' },
     { key: 'linkedin',  href: socialLinks?.linkedin,  icon: Icons.linkedin,  label: 'LinkedIn'  },
     { key: 'github',    href: socialLinks?.github,    icon: Icons.github,    label: 'GitHub'    },
-    { key: 'website',   href: socialLinks?.website,   icon: Icons.website,   label: 'Website'   },
+    { key: 'portfolio', href: socialLinks?.portfolio, icon: Icons.website,   label: 'Portfolio' },
   ].filter((s) => s.href);
 
   return (
